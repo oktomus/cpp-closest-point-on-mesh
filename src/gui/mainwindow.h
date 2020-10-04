@@ -1,7 +1,10 @@
 #pragma once
 
+#include <memory>
+
 // Forward declarations.
 class GLFWwindow;
+namespace core { class Scene; }
 
 namespace gui
 { 
@@ -35,6 +38,8 @@ class MainWindow
     static MainWindow m_instance;
 
     GLFWwindow* m_glfw_window;
+
+    std::unique_ptr<core::Scene> m_scene;
 
     void process_glfw_window_inputs();
 

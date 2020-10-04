@@ -1,5 +1,7 @@
 #pragma once
 
+#include "string_utils.h"
+
 // Standard includes.
 #include <stdio.h>
 #include <string>
@@ -45,7 +47,9 @@ std::string linux_open_file(
     if (ret < 0) 
         perror("file_name_dialog()"); 
     
-    return std::string(result);
+    std::string path = std::string(result);
+    trim(path);
+    return path;
 }
 
 } // namespace gui

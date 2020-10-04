@@ -81,6 +81,12 @@ include_directories(
 set (core_sources
     "${SRC_DIR}/core/mesh.cpp"
     "${SRC_DIR}/core/mesh.h"
+    "${SRC_DIR}/core/rasterized_mesh.cpp"
+    "${SRC_DIR}/core/rasterized_mesh.h"
+    "${SRC_DIR}/core/scene.cpp"
+    "${SRC_DIR}/core/scene.h"
+    "${SRC_DIR}/core/scene_loader.cpp"
+    "${SRC_DIR}/core/scene_loader.h"
 )
 
 add_library(
@@ -104,8 +110,9 @@ set (app_gui_sources
     "${SRC_DIR}/gui/mainwindow.cpp"
     "${SRC_DIR}/gui/mainwindow.h"
     "${SRC_DIR}/gui/main.cpp"
-)
-
+    "${SRC_DIR}/gui/string_utils.h"
+) 
+ 
 include_directories("${SRC_DIR}")
 include_directories("${SRC_DIR}/gui")
 

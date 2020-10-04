@@ -3,6 +3,10 @@
 // gui includes.
 #include "file_system.h"
 
+// core includes.
+#include "core/scene.h"
+#include "core/scene_loader.h"
+
 // imgui, gl3w and glfw includes.
 #include <imgui.h>
 #include "imgui_impl_glfw_gl3.h"
@@ -214,6 +218,9 @@ void MainWindow::imgui_draw_main_menu_bar()
             const std::vector<std::string> filter = { "OBJ | *.obj", "All files | *"};
             const std::string file_path = linux_open_file("Choose a mesh", filter);
             std::cout << file_path << std::endl;
+
+            if (!file_path.empty())
+                m_scene.reset(core::load_scene_from_file(file_path));
         }
         ImGui::EndMenu();
     }
@@ -234,6 +241,9 @@ void MainWindow::opengl_draw()
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    if (m_scene)
+        m_scene->render();
 }
 
 // GLFW Window callbacks.
