@@ -26,10 +26,14 @@ class OrbitCamera
   private:
     glm::vec3   m_position;
     glm::vec3   m_target;
+    glm::vec3   m_camera_pivot_rotation;
+    float       m_distance_to_target;
     float       m_fov;
     bool        m_rotate_when_mouse_move;
     float       m_last_mouse_pos_x;
     float       m_last_mouse_pos_y;
+
+    void compute_position();
 };
     
 } // gui

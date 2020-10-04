@@ -5,14 +5,19 @@
 
 #include <GLFW/glfw3.h>
 
+#include <algorithm>
+
 namespace gui
 {
 
 OrbitCamera::OrbitCamera()
 {
-    m_position = { 0, 30, 30 };
+    m_position = { 0, 0, 0 };
     m_target = { 0, 0, 0 };
+    m_camera_pivot_rotation = { 0, 0 ,0 };
+    m_distance_to_target = 20;
     m_fov = 45.0f;
+    compute_position();
 }
 
 glm::vec3 OrbitCamera::get_position() const
@@ -53,10 +58,11 @@ void OrbitCamera::glfw_process_mouse_move(double xpos, double ypos, float delta_
         float delta_y = ypos - m_last_mouse_pos_y;
 
         float x_weight = -std::abs(delta_x * 0.3f);
-        float y_weight = -std::abs(delta_y * 0.3f);
+        float y_weight = std::abs(delta_y * 0.3f);
 
-        m_position = glm::rotate(m_position, delta_x * delta_time * x_weight, glm::vec3(0, 1, 0));
-        m_position = glm::rotate(m_position, delta_y * delta_time * y_weight, glm::vec3(1, 0, 0));
+        m_camera_pivot_rotation.y += delta_x * delta_time * x_weight;
+        m_camera_pivot_rotation.x += delta_y * delta_time * y_weight;
+        compute_position();
     }
 
     m_last_mouse_pos_x = xpos;
@@ -70,8 +76,16 @@ void OrbitCamera::glfw_process_mouse_action(int button, int action, int mods, fl
 
 void OrbitCamera::glfw_process_scroll(double xoffset, double yoffset, float delta_time)
 {
+    m_distance_to_target = std::max(1.0f, m_distance_to_target - float(yoffset) * 1000.0f * delta_time);
+    compute_position();
+}
+
+void OrbitCamera::compute_position()
+{
     glm::vec3 direction = glm::normalize(m_position - m_target);
-    m_position -= direction * float(yoffset) * 2000.0f * delta_time;
+    m_position = { m_distance_to_target, 0.0f, 0.0f };
+    m_position = glm::rotate(m_position, m_camera_pivot_rotation.x, glm::vec3(0.0f, 0.0f, 1.0f));
+    m_position = glm::rotate(m_position, m_camera_pivot_rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 } // gui
