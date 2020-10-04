@@ -1,4 +1,4 @@
-This is an example implementation of the *closest point on mesh algorithm*. Given any 3D point and any mesh, it should find the closes point on the mesh in a maximum given radius. A GUI comes with it, to demonstrate the results and performance. Automated tests are available in the program. They test the low level methods of the algorithm.
+This is an example implementation of the *closest point on mesh* algorithm. Given any 3D point and any mesh, it should find the closest point on the mesh to the given point in a maximum given radius. A GUI comes with it to demonstrate the results and performance. Automated tests are available in the program. They test the low level methods of the algorithm.
 
 # Demo
 
@@ -8,7 +8,7 @@ This program works only on Linux.
 
 ```sh
 $ git clone git@github.com:oktomus/cpp-closest-point-on-mesh.git
-$ mkdir build; cd build;
+$ mkdir build && cd build;
 $ cmake .. && make -j # Build
 $ ./app.gui # Run the GUI
 ```
