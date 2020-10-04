@@ -19,9 +19,9 @@ class OrbitCamera
     glm::mat4 view() const;
     glm::vec3 up() const;
 
-    void glfw_process_mouse_move(GLFWwindow* window, double xpos, double ypos);
-    void glfw_process_mouse_action(GLFWwindow* window, int button, int action, int mods);
-    void glfw_process_scroll(GLFWwindow* window, double xoffset, double yoffset);
+    void glfw_process_mouse_move(double xpos, double ypos, float delta_time);
+    void glfw_process_mouse_action(int button, int action, int mods, float delta_time);
+    void glfw_process_scroll(double xoffset, double yoffset, float delta_time);
 
   private:
     glm::vec3   m_position;

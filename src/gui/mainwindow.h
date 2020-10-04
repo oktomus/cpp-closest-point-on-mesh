@@ -3,6 +3,7 @@
 #include "orbit_camera.h"
 #include "shader.h"
 
+#include <cstdlib>
 #include <memory>
 #include <string>
 
@@ -47,6 +48,14 @@ class MainWindow
     int                           m_screen_width;
     int                           m_screen_height;
     bool                          m_draw_wireframe;
+
+    float                         m_time_since_startup;
+    float                         m_last_frame_time;
+    float                         m_frame_delta_time;
+
+    double                        m_framerate;
+    float                         m_last_fps_capture_time;
+    std::size_t                   m_fps_capture_frame_count;
 
     std::unique_ptr<core::Scene>  m_scene;
     std::unique_ptr<Shader>       m_drawing_shader;

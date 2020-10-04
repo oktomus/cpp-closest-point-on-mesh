@@ -45,30 +45,33 @@ glm::vec3 OrbitCamera::up() const
     return glm::cross(direction, right);
 }
 
-void OrbitCamera::glfw_process_mouse_move(GLFWwindow* window, double xpos, double ypos)
+void OrbitCamera::glfw_process_mouse_move(double xpos, double ypos, float delta_time)
 {
     if (m_rotate_when_mouse_move)
     {
-        float difx = xpos - m_last_mouse_pos_x;
-        float dify = ypos - m_last_mouse_pos_y;
+        float delta_x = xpos - m_last_mouse_pos_x;
+        float delta_y = ypos - m_last_mouse_pos_y;
 
-        m_position = glm::rotate(m_position, difx * 0.01f, glm::vec3(0, 1, 0));
-        m_position = glm::rotate(m_position, dify * 0.01f, glm::vec3(1, 0, 0));
+        float x_weight = -std::abs(delta_x * 0.3f);
+        float y_weight = -std::abs(delta_y * 0.3f);
+
+        m_position = glm::rotate(m_position, delta_x * delta_time * x_weight, glm::vec3(0, 1, 0));
+        m_position = glm::rotate(m_position, delta_y * delta_time * y_weight, glm::vec3(1, 0, 0));
     }
 
     m_last_mouse_pos_x = xpos;
     m_last_mouse_pos_y = ypos;
 }
 
-void OrbitCamera::glfw_process_mouse_action(GLFWwindow* window, int button, int action, int mods)
+void OrbitCamera::glfw_process_mouse_action(int button, int action, int mods, float delta_time)
 {
     m_rotate_when_mouse_move = button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS;
 }
 
-void OrbitCamera::glfw_process_scroll(GLFWwindow* window, double xoffset, double yoffset)
+void OrbitCamera::glfw_process_scroll(double xoffset, double yoffset, float delta_time)
 {
     glm::vec3 direction = glm::normalize(m_position - m_target);
-    m_position -= direction * float(yoffset);
+    m_position -= direction * float(yoffset) * 2000.0f * delta_time;
 }
 
 } // gui

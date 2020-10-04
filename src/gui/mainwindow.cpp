@@ -102,6 +102,19 @@ void MainWindow::run()
 {
     while (!glfwWindowShouldClose(m_glfw_window))
     {
+        m_fps_capture_frame_count += 1;
+        m_time_since_startup = glfwGetTime();
+        m_frame_delta_time = m_time_since_startup - m_last_frame_time;
+        m_last_frame_time = m_time_since_startup;
+
+        // Compute FPS every one second.
+        if (m_time_since_startup - m_last_fps_capture_time >= 1.0) 
+        {
+            m_framerate = 1000.0 / double(m_fps_capture_frame_count);
+            m_fps_capture_frame_count = 0;
+            m_last_fps_capture_time += 1.0;
+        }
+
         process_glfw_window_inputs();
         ImGui_ImplGlfwGL3_NewFrame();
 
@@ -154,6 +167,12 @@ void MainWindow::imgui_draw()
     {
         ImGui::Begin("Debug", &debug_window_);
 
+        ImGui::Text(
+            "%f ms/frame, ~%d FPS", 
+            m_framerate, 
+            (long)(1000.0 / m_framerate));
+
+        ImGui::Text("Mouse Position: (%.1f,%.1f)", ImGui::GetIO().MousePos.x, ImGui::GetIO().MousePos.y);
         //ImGui::Checkbox("Disable viewport events", &disableViewportEvents_);
         //ImGui::Text("%f ms/frame, ~%d FPS", frameRate_,
                     //(long)(1000 / frameRate_));
@@ -291,7 +310,7 @@ void MainWindow::glfw_scroll_callback(GLFWwindow* window, double delta_x, double
     if (ImGui::IsAnyWindowHovered())
         return;
 
-    gui.m_camera.glfw_process_scroll(gui.m_glfw_window, delta_x, delta_y);
+    gui.m_camera.glfw_process_scroll(delta_x, delta_y, gui.m_frame_delta_time);
 }
 
 void MainWindow::glfw_key_callback(GLFWwindow* window, int key, int, int action, int mods)
@@ -335,7 +354,7 @@ void MainWindow::glfw_mouse_callback(GLFWwindow* window, double x, double y)
         ignore_glfw_mouse_events = true;
     }
 
-    gui.m_camera.glfw_process_mouse_move(gui.m_glfw_window, x, y);
+    gui.m_camera.glfw_process_mouse_move(x, y, gui.m_frame_delta_time);
 }
 
 void MainWindow::glfw_mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
@@ -346,7 +365,7 @@ void MainWindow::glfw_mouse_button_callback(GLFWwindow* window, int button, int 
     if (ImGui::IsAnyWindowHovered())
         return;
 
-    gui.m_camera.glfw_process_mouse_action(gui.m_glfw_window, button, action, mods);
+    gui.m_camera.glfw_process_mouse_action(button, action, mods, gui.m_frame_delta_time);
 }
 
 } // namespace gui
