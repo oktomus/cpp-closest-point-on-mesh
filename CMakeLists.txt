@@ -4,7 +4,15 @@ project(ClosestPointOnMesh)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake-modules")
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
+# Prevent in-source builds.
+if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+    message (FATAL_ERROR "In-source builds are not permitted; run CMake inside an empty build directory.")
+endif ()
+
+# C++ Standards.
 set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD_REQUIRED ON)
+set (CMAKE_CXX_EXTENSIONS OFF)
 
 ##################################################################################
 # Externals
@@ -68,6 +76,25 @@ include_directories(
         ${WEB_INC}        
         )
 
+##############
+# Build core lib
+set (core_sources
+    "${SRC_DIR}/core/mesh.cpp"
+    "${SRC_DIR}/core/mesh.h"
+)
+
+add_library(
+    core STATIC
+    ${core_sources}
+)
+
+set_target_properties (core PROPERTIES FOLDER "Core")
+
+include_directories("${SRC_DIR}/core")
+
+install (TARGETS core
+    DESTINATION lib
+)
 
 ##############
 # Buil app.gui
@@ -79,6 +106,7 @@ set (app_gui_sources
     "${SRC_DIR}/gui/main.cpp"
 )
 
+include_directories("${SRC_DIR}")
 include_directories("${SRC_DIR}/gui")
 
 add_executable(
@@ -89,6 +117,7 @@ add_executable(
     ${WEB_SRC}
 )
 
+target_link_libraries(app.gui core)
 target_link_libraries(app.gui ${OPENGL_LIBRARIES})
 target_link_libraries(app.gui ${ASSIMP_LIBRARIES})
 target_link_libraries(app.gui ${GLFW_glfw_LIBRARY})
