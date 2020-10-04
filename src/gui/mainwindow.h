@@ -10,10 +10,10 @@ namespace gui
  * @brief GUI Singleton.
  * Control the whole application UI using imgui.
  */
-class Gui
+class MainWindow
 {
   public:
-    static Gui& get_instance();
+    static MainWindow& get_instance();
 
     /**
      * @brief Open the window.
@@ -25,20 +25,22 @@ class Gui
     void release();
 
   private:
-    Gui();
+    MainWindow();
 
     /**
      * @brief Copy is forbiden.
      */
-    Gui(const Gui&) = delete;
+    MainWindow(const MainWindow&) = delete;
 
-    static Gui m_instance;
+    static MainWindow m_instance;
 
     GLFWwindow* m_glfw_window;
 
     void process_glfw_window_inputs();
 
     void imgui_draw();
+    void imgui_draw_main_menu_bar();
+
     void opengl_draw();
 
     // GLFW Window callbacks.

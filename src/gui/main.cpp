@@ -1,15 +1,15 @@
-#include "gui.h"
+#include "mainwindow.h"
 
 #include <iostream>
 #include <string>
 
 int main()
 {
-    gui::Gui& gui = gui::Gui::get_instance();
+    gui::MainWindow& window = gui::MainWindow::get_instance();
 
-    gui.init(800, 600);
-    gui.run();
-    gui.release();
+    window.init(800, 600);
+    window.run();
+    window.release();
 
     return 0;
 }

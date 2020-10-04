@@ -71,8 +71,8 @@ include_directories(
 # Buil app.gui
 
 set (app_gui_sources
-    "${SRC_DIR}/gui/gui.cpp"
-    "${SRC_DIR}/gui/gui.h"
+    "${SRC_DIR}/gui/mainwindow.cpp"
+    "${SRC_DIR}/gui/mainwindow.h"
     "${SRC_DIR}/gui/main.cpp"
 )
 

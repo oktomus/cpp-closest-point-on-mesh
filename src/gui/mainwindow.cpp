@@ -1,4 +1,4 @@
-#include "gui.h"
+#include "mainwindow.h"
 
 // imgui, gl3w and glfw headers.
 #include <imgui.h>
@@ -14,9 +14,9 @@ namespace gui
 {
 
 // Singleton access.
-Gui& Gui::get_instance() 
+MainWindow& MainWindow::get_instance() 
 {
-    return Gui::m_instance; 
+    return MainWindow::m_instance; 
 }
 
 namespace
@@ -30,7 +30,7 @@ namespace
     }
 }
 
-void Gui::init(const int window_width, const int window_height)
+void MainWindow::init(const int window_width, const int window_height)
 {
     static bool opened = false;
     assert(!opened);
@@ -84,7 +84,7 @@ void Gui::init(const int window_width, const int window_height)
     std::cout << "GUI ready to draw.\n";
 }
 
-void Gui::run()
+void MainWindow::run()
 {
     while (!glfwWindowShouldClose(m_glfw_window))
     {
@@ -101,24 +101,24 @@ void Gui::run()
     }
 }
 
-void Gui::release()
+void MainWindow::release()
 {
     ImGui_ImplGlfwGL3_Shutdown();
     glfwTerminate();
 }
 
 // Constructor.
-Gui::Gui() {}
+MainWindow::MainWindow() {}
 
 // Singleton instance.
-Gui Gui::m_instance;
+MainWindow MainWindow::m_instance;
 
-void Gui::process_glfw_window_inputs()
+void MainWindow::process_glfw_window_inputs()
 {
     if (ImGui::IsAnyWindowHovered()) return;
 }
 
-void Gui::imgui_draw()
+void MainWindow::imgui_draw()
 {
     static bool debug_window_ = true;
     static bool scene_window = true;
@@ -126,20 +126,7 @@ void Gui::imgui_draw()
     // Top bar
     if (ImGui::BeginMainMenuBar())
     {
-        if (ImGui::BeginMenu("App"))
-        {
-            static bool should_quit = false;
-            ImGui::MenuItem("Quit", "Escape", &should_quit);
-            if (should_quit)
-                glfwSetWindowShouldClose(m_glfw_window, true);
-            ImGui::EndMenu();
-        }
-        if (ImGui::BeginMenu("Windows"))
-        {
-            ImGui::MenuItem("Debug", "", &debug_window_);
-            ImGui::MenuItem("Objects", "", &scene_window);
-            ImGui::EndMenu();
-        }
+        imgui_draw_main_menu_bar();
         ImGui::EndMainMenuBar();
     }
 
@@ -205,7 +192,34 @@ void Gui::imgui_draw()
     }
 }
 
-void Gui::opengl_draw()
+void MainWindow::imgui_draw_main_menu_bar()
+{
+    if (ImGui::BeginMenu("App"))
+    {
+        static bool should_quit = false;
+        ImGui::MenuItem("Quit", "Escape", &should_quit);
+        if (should_quit)
+            glfwSetWindowShouldClose(m_glfw_window, true);
+        ImGui::EndMenu();
+    }
+
+    if (ImGui::BeginMenu("Mesh"))
+    {
+        if (ImGui::MenuItem("Load file", "", false))
+        {
+        }
+        ImGui::EndMenu();
+    }
+
+    if (ImGui::BeginMenu("Windows"))
+    {
+        //ImGui::MenuItem("Debug", "", &debug_window_);
+        //ImGui::MenuItem("Objects", "", &scene_window);
+        ImGui::EndMenu();
+    }
+}
+
+void MainWindow::opengl_draw()
 {
     glClearColor(0.12, 0.12, 0.24, 1.0);
 
@@ -216,48 +230,48 @@ void Gui::opengl_draw()
 }
 
 // GLFW Window callbacks.
-void Gui::glfw_framebuffer_size_callback(GLFWwindow* window, int width, int height)
+void MainWindow::glfw_framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-    Gui& gui = Gui::get_instance();
+    MainWindow& gui = MainWindow::get_instance();
     glViewport(0, 0, width, height);
 }
 
-void Gui::glfw_scroll_callback(GLFWwindow* window, double delta_x, double delta_y)
+void MainWindow::glfw_scroll_callback(GLFWwindow* window, double delta_x, double delta_y)
 {
-    Gui& gui = Gui::get_instance();
+    MainWindow& gui = MainWindow::get_instance();
     ImGui_ImplGlfwGL3_ScrollCallback(gui.m_glfw_window, delta_x, delta_y);
 
     if (ImGui::IsAnyWindowHovered())
         return;
 }
 
-void Gui::glfw_key_callback(GLFWwindow* window, int key, int, int action, int mods)
+void MainWindow::glfw_key_callback(GLFWwindow* window, int key, int, int action, int mods)
 {
     ImGui_ImplGlfwGL3_KeyCallback(0, key, 0, action, mods);
     if (ImGui::IsAnyWindowHovered())
         return;
 
     // keyboard shortcuts
-    Gui& gui = Gui::get_instance();
+    MainWindow& gui = MainWindow::get_instance();
 
     if (key == GLFW_KEY_ESCAPE)
         glfwSetWindowShouldClose(gui.m_glfw_window, true);
 }
 
-void Gui::glfw_char_callback(GLFWwindow* window, unsigned int c)
+void MainWindow::glfw_char_callback(GLFWwindow* window, unsigned int c)
 {
     ImGui_ImplGlfwGL3_CharCallback(0, c);
     if (ImGui::IsAnyWindowHovered())
         return;
 }
 
-void Gui::glfw_mouse_callback(GLFWwindow* window, double x, double y)
+void MainWindow::glfw_mouse_callback(GLFWwindow* window, double x, double y)
 {
     // When true, the mouse interaction is disabled on the GLFW window.
     // We do this to not interact with GLFW when we use imgui.
     static bool ignore_glfw_mouse_events = false;
 
-    Gui &gui = Gui::get_instance();
+    MainWindow &gui = MainWindow::get_instance();
 
     bool is_mouse_on_imgui = ImGui::IsAnyWindowHovered();
 
@@ -273,9 +287,9 @@ void Gui::glfw_mouse_callback(GLFWwindow* window, double x, double y)
     }
 }
 
-void Gui::glfw_mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+void MainWindow::glfw_mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
-    Gui &gui = Gui::get_instance();
+    MainWindow &gui = MainWindow::get_instance();
 
     ImGui_ImplGlfwGL3_MouseButtonCallback(gui.m_glfw_window, button, action, mods);
     if (ImGui::IsAnyWindowHovered())
