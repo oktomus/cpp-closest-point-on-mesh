@@ -1,14 +1,18 @@
 #include "mainwindow.h"
 
-// imgui, gl3w and glfw headers.
+// gui includes.
+#include "file_system.h"
+
+// imgui, gl3w and glfw includes.
 #include <imgui.h>
 #include "imgui_impl_glfw_gl3.h"
 #include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
 
-// Standard headers.
+// Standard includes.
 #include <cassert>
 #include <iostream>
+#include <string>
 
 namespace gui
 {
@@ -207,6 +211,9 @@ void MainWindow::imgui_draw_main_menu_bar()
     {
         if (ImGui::MenuItem("Load file", "", false))
         {
+            const std::vector<std::string> filter = { "OBJ | *.obj", "All files | *"};
+            const std::string file_path = linux_open_file("Choose a mesh", filter);
+            std::cout << file_path << std::endl;
         }
         ImGui::EndMenu();
     }

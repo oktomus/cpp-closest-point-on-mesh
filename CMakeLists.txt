@@ -4,6 +4,8 @@ project(ClosestPointOnMesh)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake-modules")
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
+set (CMAKE_CXX_STANDARD 11)
+
 ##################################################################################
 # Externals
 ##################################################################################
@@ -71,6 +73,7 @@ include_directories(
 # Buil app.gui
 
 set (app_gui_sources
+    "${SRC_DIR}/gui/file_system.h"
     "${SRC_DIR}/gui/mainwindow.cpp"
     "${SRC_DIR}/gui/mainwindow.h"
     "${SRC_DIR}/gui/main.cpp"
