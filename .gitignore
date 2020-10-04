@@ -36,3 +36,6 @@ build
 
 # Dependencies that are downloaded automaticaly
 distant/web
+
+# Imgui
+imgui.ini
