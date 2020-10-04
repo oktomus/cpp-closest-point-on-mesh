@@ -21,7 +21,7 @@ void RasterizedMesh::prepare()
     glBindVertexArray(m_vao_id);
 
     const std::vector<glm::vec3>& vertices = m_mesh.get_vertices();
-    const std::vector<std::size_t>& triangles = m_mesh.get_triangles();
+    const std::vector<GLuint>& triangles = m_mesh.get_triangles();
 
     m_vertex_count = vertices.size();
     m_triangle_count = triangles.size();
@@ -35,7 +35,7 @@ void RasterizedMesh::prepare()
     GLuint ebo_id;
     glGenBuffers(1, &ebo_id);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_id);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_triangle_count * sizeof(std::size_t), triangles.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_triangle_count * sizeof(GLuint), triangles.data(), GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
@@ -45,6 +45,7 @@ void RasterizedMesh::prepare()
 
 void RasterizedMesh::draw() const
 {
+    assert(m_vao_id != 0 && m_triangle_count != 0);
     glBindVertexArray(m_vao_id);
     glDrawElements(m_draw_mode, m_triangle_count, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);

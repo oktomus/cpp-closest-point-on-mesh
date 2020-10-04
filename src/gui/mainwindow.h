@@ -1,6 +1,10 @@
 #pragma once
 
+#include "orbit_camera.h"
+#include "shader.h"
+
 #include <memory>
+#include <string>
 
 // Forward declarations.
 class GLFWwindow;
@@ -27,6 +31,8 @@ class MainWindow
 
     void release();
 
+    void load_scene(const std::string& path);
+
   private:
     MainWindow();
 
@@ -35,11 +41,15 @@ class MainWindow
      */
     MainWindow(const MainWindow&) = delete;
 
-    static MainWindow m_instance;
+    static MainWindow             m_instance;
 
-    GLFWwindow* m_glfw_window;
+    GLFWwindow*                   m_glfw_window;
+    int                           m_screen_width;
+    int                           m_screen_height;
 
-    std::unique_ptr<core::Scene> m_scene;
+    std::unique_ptr<core::Scene>  m_scene;
+    std::unique_ptr<Shader>       m_drawing_shader;
+    OrbitCamera                   m_camera;
 
     void process_glfw_window_inputs();
 

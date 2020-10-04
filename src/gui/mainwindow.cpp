@@ -44,6 +44,9 @@ void MainWindow::init(const int window_width, const int window_height)
     assert(!opened);
     opened = true;
 
+    m_screen_width = window_width;
+    m_screen_height = window_height;
+
     std::cout << "Initializing window...\n";
     glfwSetErrorCallback(glfw_error_callback);
 
@@ -86,6 +89,9 @@ void MainWindow::init(const int window_width, const int window_height)
         glGetString(GL_VERSION),
         glGetString(GL_SHADING_LANGUAGE_VERSION));
 
+    std::cout << "Compiling shaders...\n";
+    m_drawing_shader = std::make_unique<Shader>("resources/shaders/solid.vert", "resources/shaders/solid.frag");
+
     std::cout << "Loading imgui...\n";
     ImGui_ImplGlfwGL3_Init(m_glfw_window, false);
 
@@ -113,6 +119,11 @@ void MainWindow::release()
 {
     ImGui_ImplGlfwGL3_Shutdown();
     glfwTerminate();
+}
+
+void MainWindow::load_scene(const std::string& path)
+{
+    m_scene.reset(core::load_scene_from_file(path));
 }
 
 // Constructor.
@@ -217,10 +228,8 @@ void MainWindow::imgui_draw_main_menu_bar()
         {
             const std::vector<std::string> filter = { "OBJ | *.obj", "All files | *"};
             const std::string file_path = linux_open_file("Choose a mesh", filter);
-            std::cout << file_path << std::endl;
-
             if (!file_path.empty())
-                m_scene.reset(core::load_scene_from_file(file_path));
+                load_scene(file_path);
         }
         ImGui::EndMenu();
     }
@@ -236,11 +245,20 @@ void MainWindow::imgui_draw_main_menu_bar()
 void MainWindow::opengl_draw()
 {
     glClearColor(0.12, 0.12, 0.24, 1.0);
+    glClearDepth(1.0);
+    glEnable(GL_BLEND);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    m_drawing_shader->use();
+    m_drawing_shader->set_mat4("view", m_camera.view());
+    //m_drawing_shader->set_vec3("viewPos", m_camera.get_position());
+    m_drawing_shader->set_mat4("projection", m_camera.projection(m_screen_width, m_screen_height));
 
     if (m_scene)
         m_scene->render();
@@ -250,6 +268,8 @@ void MainWindow::opengl_draw()
 void MainWindow::glfw_framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     MainWindow& gui = MainWindow::get_instance();
+    gui.m_screen_width = width;
+    gui.m_screen_height = height;
     glViewport(0, 0, width, height);
 }
 
@@ -260,6 +280,8 @@ void MainWindow::glfw_scroll_callback(GLFWwindow* window, double delta_x, double
 
     if (ImGui::IsAnyWindowHovered())
         return;
+
+    gui.m_camera.glfw_process_scroll(gui.m_glfw_window, delta_x, delta_y);
 }
 
 void MainWindow::glfw_key_callback(GLFWwindow* window, int key, int, int action, int mods)
@@ -302,6 +324,8 @@ void MainWindow::glfw_mouse_callback(GLFWwindow* window, double x, double y)
         glfwSetInputMode(gui.m_glfw_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         ignore_glfw_mouse_events = true;
     }
+
+    gui.m_camera.glfw_process_mouse_move(gui.m_glfw_window, x, y);
 }
 
 void MainWindow::glfw_mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
@@ -311,6 +335,8 @@ void MainWindow::glfw_mouse_button_callback(GLFWwindow* window, int button, int 
     ImGui_ImplGlfwGL3_MouseButtonCallback(gui.m_glfw_window, button, action, mods);
     if (ImGui::IsAnyWindowHovered())
         return;
+
+    gui.m_camera.glfw_process_mouse_action(gui.m_glfw_window, button, action, mods);
 }
 
 } // namespace gui

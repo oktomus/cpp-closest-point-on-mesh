@@ -23,7 +23,7 @@ namespace
     Mesh process_mesh_node(aiMesh* mesh, const aiScene* scene)
     {
         std::vector<glm::vec3> vertices;
-        std::vector<std::size_t> triangles;
+        std::vector<GLuint> triangles;
 
         // Load mesh vertices.
         vertices.reserve(mesh->mNumVertices);

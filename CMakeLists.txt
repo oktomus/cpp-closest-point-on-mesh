@@ -10,7 +10,7 @@ if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 endif ()
 
 # C++ Standards.
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 14)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 set (CMAKE_CXX_EXTENSIONS OFF)
 
@@ -76,6 +76,13 @@ include_directories(
         ${WEB_INC}        
         )
 
+        
+##############
+# Build assets
+
+message(STATUS "Copy resources into ${CMAKE_CURRENT_BINARY_DIR}/resources")
+file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/resources" DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
 ##############
 # Build core lib
 set (core_sources
@@ -106,11 +113,15 @@ install (TARGETS core
 # Buil app.gui
 
 set (app_gui_sources
+    "${SRC_DIR}/gui/orbit_camera.h"
+    "${SRC_DIR}/gui/orbit_camera.cpp"
     "${SRC_DIR}/gui/file_system.h"
     "${SRC_DIR}/gui/mainwindow.cpp"
     "${SRC_DIR}/gui/mainwindow.h"
     "${SRC_DIR}/gui/main.cpp"
     "${SRC_DIR}/gui/string_utils.h"
+    "${SRC_DIR}/gui/shader.cpp"
+    "${SRC_DIR}/gui/shader.h"
 ) 
  
 include_directories("${SRC_DIR}")
