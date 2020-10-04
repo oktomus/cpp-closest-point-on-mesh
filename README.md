@@ -9,7 +9,7 @@ This program works only on Linux.
 ```sh
 $ git clone git@github.com:oktomus/cpp-closest-point-on-mesh.git
 $ mkdir build && cd build;
-$ cmake .. && make -j # Build
+$ cmake -DCMAKE_BUILD_TYPE=Release .. && make -j # Build
 $ ./app.gui # Run the GUI
 ```
 
