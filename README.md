@@ -2,6 +2,18 @@ This is an example implementation of the *closest point on mesh algorithm*. Give
 
 # Demo
 
+# Build
+
+This program works only on Linux.
+
+```sh
+$ git clone git@github.com:oktomus/cpp-closest-point-on-mesh.git
+$ mkdir build; cd build;
+$ cmake .. && make -j # Build
+$ ./app.gui # Run the GUI
+```
+
+
 # Dependencies
 
 Here is what you need to install on your computer to run this program:
