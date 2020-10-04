@@ -234,6 +234,12 @@ void MainWindow::imgui_draw_main_menu_bar()
         ImGui::EndMenu();
     }
 
+    if (ImGui::BeginMenu("Viewport"))
+    {
+        ImGui::MenuItem("Draw wireframe", "", &m_draw_wireframe);
+        ImGui::EndMenu();
+    }
+
     if (ImGui::BeginMenu("Windows"))
     {
         //ImGui::MenuItem("Debug", "", &debug_window_);
@@ -251,7 +257,11 @@ void MainWindow::opengl_draw()
     glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+    if (m_draw_wireframe)
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    else
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

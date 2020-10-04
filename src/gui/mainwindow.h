@@ -46,6 +46,7 @@ class MainWindow
     GLFWwindow*                   m_glfw_window;
     int                           m_screen_width;
     int                           m_screen_height;
+    bool                          m_draw_wireframe;
 
     std::unique_ptr<core::Scene>  m_scene;
     std::unique_ptr<Shader>       m_drawing_shader;
