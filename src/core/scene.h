@@ -16,6 +16,9 @@ class Scene
   public:
     Scene(const std::vector<Mesh>& meshes);
 
+    // FIXME: Multiple mesh usage is not supported.
+    const Mesh& get_mesh() const;
+
     void render() const;
 
   private:

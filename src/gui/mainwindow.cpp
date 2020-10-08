@@ -4,17 +4,22 @@
 #include "file_system.h"
 
 // core includes.
+#include "core/closest_point_query.h"
 #include "core/scene.h"
 #include "core/scene_loader.h"
 
 // imgui, gl3w and glfw includes.
 #include <imgui.h>
 #include "imgui_impl_glfw_gl3.h"
-#include <GL/gl3w.h>
+#include "imgui_internal.h"
 #include <GLFW/glfw3.h>
+#include <glad/glad.h>
+#include <glm/gtc/type_ptr.hpp>
 
 // Standard includes.
 #include <cassert>
+#include <chrono> 
+#include <inttypes.h>
 #include <iostream>
 #include <string>
 
@@ -69,6 +74,7 @@ void MainWindow::init(const int window_width, const int window_height)
     }
 
     glfwMakeContextCurrent(m_glfw_window);
+    glfwSwapInterval(0);
     glfwSetFramebufferSizeCallback(m_glfw_window,   this->glfw_framebuffer_size_callback);
     glfwSetCursorPosCallback(m_glfw_window,         this->glfw_mouse_callback);
     glfwSetScrollCallback(m_glfw_window,            this->glfw_scroll_callback);
@@ -78,7 +84,7 @@ void MainWindow::init(const int window_width, const int window_height)
 
     std::cout << "Loading OpenGL...\n";
 
-    if (gl3wInit()) 
+    if (!gladLoadGL()) 
     {
         std::cerr << "Failed to initialize OpenGL.\n";
         exit(4);
@@ -90,7 +96,9 @@ void MainWindow::init(const int window_width, const int window_height)
         glGetString(GL_SHADING_LANGUAGE_VERSION));
 
     std::cout << "Compiling shaders...\n";
-    m_drawing_shader = std::make_unique<Shader>("resources/shaders/solid.vert", "resources/shaders/solid.frag");
+    m_drawing_shader = std::make_unique<Shader>("resources/shaders/facing_ratio.vert", "resources/shaders/facing_ratio.frag");
+    m_point_shader = std::make_unique<Shader>("resources/shaders/point.vert", "resources/shaders/point.frag");
+    // m_drawing_shader = std::make_unique<Shader>("resources/shaders/solid.vert", "resources/shaders/solid.frag");
 
     std::cout << "Loading imgui...\n";
     ImGui_ImplGlfwGL3_Init(m_glfw_window, false);
@@ -118,6 +126,10 @@ void MainWindow::run()
         process_glfw_window_inputs();
         ImGui_ImplGlfwGL3_NewFrame();
 
+        // Run query.
+        if (m_closest_point_query)
+            find_closest_point();
+
         imgui_draw();
         opengl_draw();
 
@@ -137,10 +149,14 @@ void MainWindow::release()
 void MainWindow::load_scene(const std::string& path)
 {
     m_scene.reset(core::load_scene_from_file(path));
+    core::ClosestPointQuery* query = new core::ClosestPointQuery(m_scene->get_mesh());
+    m_closest_point_query.reset(query);
 }
 
 // Constructor.
-MainWindow::MainWindow() {}
+MainWindow::MainWindow() 
+  : m_query_point_max_serach_radius(10.0f)
+{}
 
 // Singleton instance.
 MainWindow MainWindow::m_instance;
@@ -152,8 +168,7 @@ void MainWindow::process_glfw_window_inputs()
 
 void MainWindow::imgui_draw()
 {
-    static bool debug_window_ = true;
-    static bool scene_window = true;
+    static bool show_window = true;
 
     // Top bar
     if (ImGui::BeginMainMenuBar())
@@ -163,67 +178,38 @@ void MainWindow::imgui_draw()
     }
 
     // Debug win
-    if (debug_window_)
+    if (show_window)
     {
-        ImGui::Begin("Debug", &debug_window_);
+        ImGui::Begin("Controls", &show_window);
 
-        ImGui::Text(
-            "%f ms/frame, ~%d FPS", 
-            m_framerate, 
-            (long)(1000.0 / m_framerate));
-
-        ImGui::Text("Mouse Position: (%.1f,%.1f)", ImGui::GetIO().MousePos.x, ImGui::GetIO().MousePos.y);
-        //ImGui::Checkbox("Disable viewport events", &disableViewportEvents_);
-        //ImGui::Text("%f ms/frame, ~%d FPS", frameRate_,
-                    //(long)(1000 / frameRate_));
-        //ImGui::ColorEdit4("Clear color", glm::value_ptr(clearColor_));
-        ImGui::End();
-    }
-
-    if (scene_window)
-    {
-        ImGui::Begin("Scene", &scene_window);
-
-        //ImGui::Checkbox("Wireframe mode", &drawLine_);
-        //ImGui::Checkbox("Display lights in the viewport", &drawLights_);
-
-        if (ImGui::CollapsingHeader("Skybox"))
+        if (ImGui::TreeNode("Closest point query settings"))
         {
-            //ImGui::Checkbox("Show sky", &skybox_->draw_);
+            ImGui::Text("Position");
+            ImGui::DragFloat3("", glm::value_ptr(m_query_point_pos), 0.1f);
+            ImGui::Text("Maximum search radius");
+            ImGui::DragFloat("", &m_query_point_max_serach_radius, 0.1f, 0.0f);
+            m_query_point_max_serach_radius = std::max(m_query_point_max_serach_radius, 0.0f);
+            ImGui::TreePop();
         }
 
-        if (ImGui::CollapsingHeader("Terrain"))
+        if (ImGui::TreeNode("Closest point result"))
         {
-            //ImGui::Checkbox("Show terrain", &ground_->draw_);
-
-            //if (ImGui::Button("Randomize Terrain"))
-                //ground_->randomize();
+            ImGui::Text("Position");
+            glm::vec3 readonly_pos = m_closest_point_pos;
+            ImGui::DragFloat3("", glm::value_ptr(readonly_pos));
+            ImGui::Text("Time %" PRId64 "ms", m_closest_point_query_time);
+            ImGui::TreePop();
         }
 
-        if (ImGui::CollapsingHeader("Camera"))
+        if (ImGui::TreeNode("Debug"))
         {
-            //ImGui::Text("Camera Pos (%f, %f, %f)", cam_->pos.x, cam_->pos.y,
-                        //cam_->pos.z);
-            if (ImGui::Button("Reset Camera"))
-            {
-                //cam_->reset();
-            }
-            if (ImGui::Button("Switch to FPS"))
-            {
-                //cam_ = std::make_unique<FPSCamera>();
-            }
-            if (ImGui::Button("Switch to Orbit"))
-            {
-                //cam_ = std::make_unique<OrbitCamera>();
-            }
-        }
+            ImGui::Text(
+                "%f ms/frame, ~%d FPS", 
+                m_framerate, 
+                (long)(1000.0 / m_framerate));
 
-        if (ImGui::CollapsingHeader("Objects"))
-        {
-        }
-
-        if (ImGui::CollapsingHeader("Lighting"))
-        {
+            ImGui::Text("Mouse Position: (%.1f,%.1f)", ImGui::GetIO().MousePos.x, ImGui::GetIO().MousePos.y);
+            ImGui::TreePop();
         }
 
         ImGui::End();
@@ -258,13 +244,6 @@ void MainWindow::imgui_draw_main_menu_bar()
         ImGui::MenuItem("Draw wireframe", "", &m_draw_wireframe);
         ImGui::EndMenu();
     }
-
-    if (ImGui::BeginMenu("Windows"))
-    {
-        //ImGui::MenuItem("Debug", "", &debug_window_);
-        //ImGui::MenuItem("Objects", "", &scene_window);
-        ImGui::EndMenu();
-    }
 }
 
 void MainWindow::opengl_draw()
@@ -274,6 +253,7 @@ void MainWindow::opengl_draw()
     glEnable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
+    glEnable(GL_POINT_SIZE);
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -284,13 +264,52 @@ void MainWindow::opengl_draw()
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    const glm::mat4 view = m_camera.view();
+    const glm::mat4 projection = m_camera.projection(m_screen_width, m_screen_height);
+
+    // Draw the scene.
     m_drawing_shader->use();
-    m_drawing_shader->set_mat4("view", m_camera.view());
-    //m_drawing_shader->set_vec3("viewPos", m_camera.get_position());
-    m_drawing_shader->set_mat4("projection", m_camera.projection(m_screen_width, m_screen_height));
+    m_drawing_shader->set_mat4("view", view);
+    m_drawing_shader->set_mat4("projection", projection);
 
     if (m_scene)
         m_scene->render();
+    
+    // Draw the points to showcase the algorithm.
+    glDisable(GL_DEPTH_TEST);
+    m_point_shader->use();
+    m_point_shader->set_mat4("view", view);
+    m_point_shader->set_mat4("projection", projection);
+    m_point_shader->set_float("size", 8.0f);
+    m_scene_points.draw();
+}
+
+void MainWindow::find_closest_point()
+{
+    // Start a timer to know how long it takes.
+    auto timer_start = std::chrono::high_resolution_clock::now(); 
+
+    // Run the query.
+    m_closest_point_pos = 
+        m_closest_point_query->get_closest_point(
+            m_query_point_pos, 
+            m_query_point_max_serach_radius);
+
+    auto timer_stop = std::chrono::high_resolution_clock::now(); 
+    m_closest_point_query_time = std::chrono::duration_cast<std::chrono::milliseconds>(timer_stop - timer_start).count();
+
+    // Push the points in a buffer ready to be rendered.
+    std::vector<RasterizedPoints::Point> points = {
+        { 
+            m_query_point_pos,
+            { 1.0, 0.4, 1.0, 1.0 } // color
+        },
+        { 
+            m_closest_point_pos,
+            { 1.0, 0.0, 1.0, 0.5 } // color
+        }
+    };
+    m_scene_points.set_points(points);
 }
 
 // GLFW Window callbacks.

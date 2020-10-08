@@ -30,6 +30,7 @@ class OrbitCamera
     float       m_distance_to_target;
     float       m_fov;
     bool        m_rotate_when_mouse_move;
+    bool        m_pan_when_mouse_move;
     float       m_last_mouse_pos_x;
     float       m_last_mouse_pos_y;
 

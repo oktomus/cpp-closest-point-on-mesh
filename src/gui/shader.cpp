@@ -75,13 +75,17 @@ namespace
     }
 
     void compile_shader(
-        const std::string&  sourcePath,
+        const std::string&  source_path,
         const GLuint&       shader_id,
         const std::string&  type)
     {
         assert(shader_id != 0);
 
-        const std::string source = read_shader_file(sourcePath);
+        std::cout << "Compiling " << source_path << "...\n";
+
+        const std::string source = read_shader_file(source_path);
+        assert(source.length() > 0);
+
         const char *sourceChar = source.c_str();
 
         // Load the source

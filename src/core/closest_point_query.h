@@ -1,0 +1,24 @@
+#pragma once
+
+#include "mesh.h"
+
+#include <glm/glm.hpp>
+
+namespace core
+{
+
+class ClosestPointQuery
+{
+  public:
+    ClosestPointQuery(const Mesh& mesh);
+
+    /**
+     * @brief Return the closest point on the mesh within the specified maximum search distance.
+     */
+    glm::vec3 get_closest_point(const glm::vec3& query_point, float max_distance) const;
+
+  private:
+    const Mesh& m_mesh;
+};
+
+} // namespace core

@@ -22,20 +22,25 @@ namespace
 {
     Mesh process_mesh_node(aiMesh* mesh, const aiScene* scene)
     {
-        std::vector<glm::vec3> vertices;
+        std::vector<Mesh::Vertex> vertices;
         std::vector<GLuint> triangles;
 
-        // Load mesh vertices.
+        // Load mesh vertices and normals.
         vertices.reserve(mesh->mNumVertices);
 
         for (std::size_t i = 0; i < mesh->mNumVertices; ++i)
         {
             const aiVector3D& aiVertex = mesh->mVertices[i];
+            const aiVector3D& aiNormal = mesh->mNormals[i];
 
-            glm::vec3 vertex;
-            vertex.x = aiVertex.x;
-            vertex.y = aiVertex.y;
-            vertex.z = aiVertex.z;
+            Mesh::Vertex vertex;
+            vertex.pos.x = aiVertex.x;
+            vertex.pos.y = aiVertex.y;
+            vertex.pos.z = aiVertex.z;
+
+            vertex.normal.x = aiNormal.x;
+            vertex.normal.y = aiNormal.y;
+            vertex.normal.z = aiNormal.z;
 
             vertices.push_back(vertex);
         }
@@ -59,7 +64,12 @@ namespace
     std::vector<Mesh> load_meshes_from_file(const std::string& file_path)
     {
         Assimp::Importer importer;
-        const aiScene* scene = importer.ReadFile(file_path, aiProcess_Triangulate | aiProcess_FlipUVs);
+        const aiScene* scene = importer.ReadFile(
+            file_path, 
+            aiProcess_Triangulate 
+            | aiProcess_FlipUVs
+            | aiProcess_GenNormals
+            | aiProcess_ForceGenNormals);
 
         if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
         {

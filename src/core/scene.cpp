@@ -3,6 +3,8 @@
 #include "mesh.h"
 #include "rasterized_mesh.h"
 
+#include <cstddef>
+
 namespace core
 {
 
@@ -18,6 +20,12 @@ Scene::Scene(const std::vector<Mesh>& meshes)
         drawing_mesh.prepare();
         m_drawing_meshes.push_back(drawing_mesh);
     }
+}
+
+const Mesh& Scene::get_mesh() const
+{
+    assert(m_meshes.size() > 0);
+    return m_meshes[0];
 }
 
 void Scene::render() const
