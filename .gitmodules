@@ -6,10 +6,6 @@
 	path = distant/glfw
 	url = https://github.com/glfw/glfw
     ignore = dirty
-[submodule "distant/gl3w"]
-	path = distant/gl3w
-	url = https://github.com/skaslev/gl3w.git
-    ignore = dirty
 [submodule "distant/glm"]
 	path = distant/glm
 	url = https://github.com/g-truc/glm.git
