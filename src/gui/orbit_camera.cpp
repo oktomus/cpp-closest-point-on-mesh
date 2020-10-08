@@ -87,7 +87,7 @@ void OrbitCamera::glfw_process_mouse_action(int button, int action, int mods, fl
 
 void OrbitCamera::glfw_process_scroll(double xoffset, double yoffset, float delta_time)
 {
-    m_distance_to_target = std::max(1.0f, m_distance_to_target - float(yoffset) * 400.0f * delta_time);
+    m_distance_to_target = std::max(1.0f, m_distance_to_target - float(yoffset) * 200.0f * delta_time);
     compute_position();
 }
 

@@ -156,6 +156,7 @@ void MainWindow::load_scene(const std::string& path)
 // Constructor.
 MainWindow::MainWindow() 
   : m_query_point_max_serach_radius(10.0f)
+  , m_query_point_pos(0.0f, 2.8f, 0.4f)
 {}
 
 // Singleton instance.
