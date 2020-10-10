@@ -21,7 +21,7 @@ void RasterizedMesh::prepare()
     glBindVertexArray(m_vao_id);
 
     const std::vector<Mesh::Vertex>& vertices = m_mesh.get_vertices();
-    const std::vector<GLuint>& triangles = m_mesh.get_triangles();
+    const std::vector<unsigned int>& triangles = m_mesh.get_triangles();
 
     m_vertex_count = vertices.size();
     m_triangle_count = triangles.size();
@@ -35,7 +35,7 @@ void RasterizedMesh::prepare()
     GLuint ebo_id;
     glGenBuffers(1, &ebo_id);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_id);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_triangle_count * sizeof(GLuint), triangles.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_triangle_count * sizeof(unsigned int), triangles.data(), GL_STATIC_DRAW);
 
     // Define the offset and stride for positions.
     glEnableVertexAttribArray(0);

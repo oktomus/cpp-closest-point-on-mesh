@@ -18,7 +18,7 @@
 
 // Standard includes.
 #include <cassert>
-#include <chrono> 
+#include <chrono>
 #include <inttypes.h>
 #include <iostream>
 #include <string>
@@ -27,9 +27,9 @@ namespace gui
 {
 
 // Singleton access.
-MainWindow& MainWindow::get_instance() 
+MainWindow& MainWindow::get_instance()
 {
-    return MainWindow::m_instance; 
+    return MainWindow::m_instance;
 }
 
 namespace
@@ -55,7 +55,7 @@ void MainWindow::init(const int window_width, const int window_height)
     std::cout << "Initializing window...\n";
     glfwSetErrorCallback(glfw_error_callback);
 
-    if (!glfwInit()) 
+    if (!glfwInit())
     {
       std::cerr << "Unable to initialize GLFW.\n";
       exit(1);
@@ -67,7 +67,7 @@ void MainWindow::init(const int window_width, const int window_height)
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     m_glfw_window = glfwCreateWindow(window_width, window_height, "app.gui", NULL, NULL);
 
-    if (!m_glfw_window) 
+    if (!m_glfw_window)
     {
       std::cerr << "Unable to create a window.\n";
       exit(2);
@@ -84,14 +84,14 @@ void MainWindow::init(const int window_width, const int window_height)
 
     std::cout << "Loading OpenGL...\n";
 
-    if (!gladLoadGL()) 
+    if (!gladLoadGL())
     {
         std::cerr << "Failed to initialize OpenGL.\n";
         exit(4);
     }
 
     printf(
-        "Loaded OpenGL %s, GLSL %s\n", 
+        "Loaded OpenGL %s, GLSL %s\n",
         glGetString(GL_VERSION),
         glGetString(GL_SHADING_LANGUAGE_VERSION));
 
@@ -116,7 +116,7 @@ void MainWindow::run()
         m_last_frame_time = m_time_since_startup;
 
         // Compute FPS every one second.
-        if (m_time_since_startup - m_last_fps_capture_time >= 1.0) 
+        if (m_time_since_startup - m_last_fps_capture_time >= 1.0)
         {
             m_framerate = 1000.0 / double(m_fps_capture_frame_count);
             m_fps_capture_frame_count = 0;
@@ -154,7 +154,7 @@ void MainWindow::load_scene(const std::string& path)
 }
 
 // Constructor.
-MainWindow::MainWindow() 
+MainWindow::MainWindow()
   : m_query_point_max_serach_radius(10.0f)
   , m_query_point_pos(0.0f, 2.8f, 0.4f)
 {}
@@ -205,8 +205,8 @@ void MainWindow::imgui_draw()
         if (ImGui::TreeNode("Debug"))
         {
             ImGui::Text(
-                "%f ms/frame, ~%d FPS", 
-                m_framerate, 
+                "%f ms/frame, ~%d FPS",
+                m_framerate,
                 (long)(1000.0 / m_framerate));
 
             ImGui::Text("Mouse Position: (%.1f,%.1f)", ImGui::GetIO().MousePos.x, ImGui::GetIO().MousePos.y);
@@ -275,7 +275,7 @@ void MainWindow::opengl_draw()
 
     if (m_scene)
         m_scene->render();
-    
+
     // Draw the points to showcase the algorithm.
     glDisable(GL_DEPTH_TEST);
     m_point_shader->use();
@@ -288,24 +288,24 @@ void MainWindow::opengl_draw()
 void MainWindow::find_closest_point()
 {
     // Start a timer to know how long it takes.
-    auto timer_start = std::chrono::high_resolution_clock::now(); 
+    auto timer_start = std::chrono::high_resolution_clock::now();
 
     // Run the query.
-    m_closest_point_pos = 
-        m_closest_point_query->get_closest_point(
-            m_query_point_pos, 
-            m_query_point_max_serach_radius);
+    m_closest_point_query->get_closest_point(
+        m_query_point_pos,
+        m_query_point_max_serach_radius,
+        m_closest_point_pos);
 
-    auto timer_stop = std::chrono::high_resolution_clock::now(); 
+    auto timer_stop = std::chrono::high_resolution_clock::now();
     m_closest_point_query_time = std::chrono::duration_cast<std::chrono::milliseconds>(timer_stop - timer_start).count();
 
     // Push the points in a buffer ready to be rendered.
     std::vector<RasterizedPoints::Point> points = {
-        { 
+        {
             m_query_point_pos,
             { 1.0, 0.4, 1.0, 1.0 } // color
         },
-        { 
+        {
             m_closest_point_pos,
             { 1.0, 0.0, 1.0, 0.5 } // color
         }

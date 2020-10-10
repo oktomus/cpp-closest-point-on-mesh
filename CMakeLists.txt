@@ -38,7 +38,7 @@ if (NOT EXISTS ${IMGUI_ROOT}/imgui_impl_glfw_gl3.cpp OR
     file(COPY
         ${IMGUI_ROOT}/examples/opengl3_example/imgui_impl_glfw_gl3.cpp
         ${IMGUI_ROOT}/examples/opengl3_example/imgui_impl_glfw_gl3.h
-        DESTINATION ${IMGUI_ROOT}) 
+        DESTINATION ${IMGUI_ROOT})
 
     message(STATUS "Replacing gl3w with glad in imgui implementation files")
     FILE(READ ${IMGUI_ROOT}/imgui_impl_glfw_gl3.cpp IMGUI_HEADER_STR)
@@ -58,11 +58,11 @@ include_directories(
         ${GLM_INC}
         ${OPENGL_INCLUDE_DIR}
         ${ASSIMP_INCLUDE_DIR}
-        ${IMGUI_INC} 
-        ${WEB_INC}        
+        ${IMGUI_INC}
+        ${WEB_INC}
         )
 
-        
+
 ##############
 # Build assets
 
@@ -95,6 +95,7 @@ install (TARGETS glad
 set (core_sources
     "${SRC_DIR}/core/closest_point_query.cpp"
     "${SRC_DIR}/core/closest_point_query.h"
+    "${SRC_DIR}/core/math.h"
     "${SRC_DIR}/core/mesh.cpp"
     "${SRC_DIR}/core/mesh.h"
     "${SRC_DIR}/core/rasterized_mesh.cpp"
@@ -140,8 +141,8 @@ set (app_gui_sources
     "${SRC_DIR}/gui/string_utils.h"
     "${SRC_DIR}/gui/shader.cpp"
     "${SRC_DIR}/gui/shader.h"
-) 
- 
+)
+
 include_directories("${SRC_DIR}")
 include_directories("${SRC_DIR}/gui")
 include_directories("${SRC_DIR}/thirdparty")

@@ -25,14 +25,14 @@ class Mesh
 
     Mesh(
         const std::vector<Vertex>& vertices,
-        const std::vector<GLuint>& triangles);
+        const std::vector<unsigned int>& triangles);
 
     const std::vector<Vertex>& get_vertices() const;
-    const std::vector<GLuint>& get_triangles() const;
+    const std::vector<unsigned int>& get_triangles() const;
 
   private:
     const std::vector<Vertex> m_vertices;
-    const std::vector<GLuint> m_triangles;
+    const std::vector<unsigned int> m_triangles;
 };
 
 } // namespace core

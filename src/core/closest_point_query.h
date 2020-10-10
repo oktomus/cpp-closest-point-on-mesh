@@ -15,7 +15,10 @@ class ClosestPointQuery
     /**
      * @brief Return the closest point on the mesh within the specified maximum search distance.
      */
-    glm::vec3 get_closest_point(const glm::vec3& query_point, float max_distance) const;
+    bool get_closest_point(
+        const glm::vec3&    query_point,
+        float               max_distance,
+        glm::vec3&          result) const;
 
   private:
     const Mesh& m_mesh;
