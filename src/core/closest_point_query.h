@@ -42,8 +42,6 @@ class ClosestPointQuery
         3, /* Go 3D! */
         size_t> TreeIndex;
     TreeIndex m_tree_index;
-
-    typedef std::vector<std::pair<std::size_t, float>> TreeSearchVectorResult;
 };
 
 } // namespace core

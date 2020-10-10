@@ -43,33 +43,45 @@ bool ClosestPointQuery::get_closest_point(
         0.0f,  // epsilon
         true); // true means we want results to be sorted by squared dist
 
-    std::vector<std::size_t> ret_index(1);
-    std::vector<float> out_dist_sqr(1);
+    // Take the 10 closest and keep the best out of them.
+    const std::size_t expected_result_count = 200;
+    std::vector<std::size_t> ret_index(expected_result_count);
+    std::vector<float> out_dist_sqr(expected_result_count);
     const std::size_t num_results =
         m_tree_index.knnSearch(
             glm::value_ptr(query_point),
-            1, // We only want 1 result, the closest one.
+            expected_result_count,
             &ret_index[0],
             &out_dist_sqr[0]);
 
-    if (num_results == 0)
-        return false;
+    bool found = false;
+    float closest_distance2 = 0.0f;
 
-    glm::vec3 v1, v2, v3;
-    m_mesh_point_cloud.get_triangle(ret_index[0], v1, v2, v3);
+    for (std::size_t result_index = 0; result_index < num_results; ++result_index)
+    {
+        // Ask the triangle to the point cloud.
+        glm::vec3 v1, v2, v3;
+        m_mesh_point_cloud.get_triangle(ret_index[result_index], v1, v2, v3);
 
-    result = closest_point_in_triangle(
-        query_point,
-        v1,
-        v2,
-        v3);
+        // Compute the point on the triangle.
+        glm::vec3 p = closest_point_in_triangle(
+            query_point,
+            v1,
+            v2,
+            v3);
 
-    const float distance2_to_triangle = distance2(result, query_point);
+        // Keep the best.
+        const float distance2_to_triangle = distance2(p, query_point);
 
-    if (distance2_to_triangle > max_distance)
-        return false;;
+        if (distance2_to_triangle < max_distance
+            && (!found || distance2_to_triangle < closest_distance2))
+        {
+            found = true;
+            result = p;
+        }
+    }
 
-    return true;
+    return found;
 }
 
 } // namespace core
