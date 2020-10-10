@@ -4,22 +4,17 @@ This is an example implementation of the *closest point on mesh* algorithm. Give
 
 # Build
 
-This program works only on Linux.
+This program works only on Linux and require the following dependencies:
+- assimp
+- glfw
 
 ```sh
 $ git clone git@github.com:oktomus/cpp-closest-point-on-mesh.git
+$ cd cpp-closest-point-on-mesh
 $ mkdir build && cd build;
 $ cmake -DCMAKE_BUILD_TYPE=Release .. && make -j # Build
 $ ./app.gui # Run the GUI
 ```
-
-
-# Dependencies
-
-Here is what you need to install on your computer to run this program:
-- [Assimp](https://www.assimp.org/)
-- [GLFW](https://www.glfw.org/)
-- OpenGL
 
 # Developer's notes 
 
