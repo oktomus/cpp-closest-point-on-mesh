@@ -60,6 +60,8 @@ glm::vec3 closest_point_in_triangle(
     float t0 = a01 * b1 - a11 * b0;
     float t1 = a01 * b0 - a00 * b1;
 
+    // FIXME: Make this code easy to read.
+    // Right now, it's copy-pasted from the paper.
     if (t0 + t1 <= det)
     {
         if (t0 < 0.0f)

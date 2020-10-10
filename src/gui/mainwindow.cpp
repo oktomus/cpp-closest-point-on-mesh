@@ -156,7 +156,7 @@ void MainWindow::load_scene(const std::string& path)
 // Constructor.
 MainWindow::MainWindow()
   : m_query_point_max_serach_radius(10.0f)
-  , m_query_point_pos(0.0f, 2.8f, 0.4f)
+  , m_query_point_pos(-1.2f, 1.6f, 2.8f)
 {}
 
 // Singleton instance.
@@ -170,6 +170,7 @@ void MainWindow::process_glfw_window_inputs()
 void MainWindow::imgui_draw()
 {
     static bool show_window = true;
+    static bool first_display = true;
 
     // Top bar
     if (ImGui::BeginMainMenuBar())
@@ -183,6 +184,7 @@ void MainWindow::imgui_draw()
     {
         ImGui::Begin("Controls", &show_window);
 
+        if (first_display) ImGui::SetNextTreeNodeOpen(true);
         if (ImGui::TreeNode("Closest point query settings"))
         {
             ImGui::Text("Position");
@@ -193,6 +195,7 @@ void MainWindow::imgui_draw()
             ImGui::TreePop();
         }
 
+        if (first_display) ImGui::SetNextTreeNodeOpen(true);
         if (ImGui::TreeNode("Closest point result"))
         {
             ImGui::Text("Position");
@@ -202,6 +205,7 @@ void MainWindow::imgui_draw()
             ImGui::TreePop();
         }
 
+        if (first_display) ImGui::SetNextTreeNodeOpen(true);
         if (ImGui::TreeNode("Debug"))
         {
             ImGui::Text(
@@ -215,6 +219,8 @@ void MainWindow::imgui_draw()
 
         ImGui::End();
     }
+
+    first_display = false;
 }
 
 void MainWindow::imgui_draw_main_menu_bar()
@@ -287,15 +293,14 @@ void MainWindow::opengl_draw()
 
 void MainWindow::find_closest_point()
 {
-    // Invalid search radius, cancel.
-    if (m_query_point_max_serach_radius <= 0.0f)
-        return;
+    // Invalid search radius, don't run.
+    bool run = m_query_point_max_serach_radius > 0.0f;
 
     // Start a timer to know how long it takes.
     auto timer_start = std::chrono::high_resolution_clock::now();
 
     // Run the query.
-    m_closest_point_query->get_closest_point(
+    bool found = run && m_closest_point_query->get_closest_point(
         m_query_point_pos,
         m_query_point_max_serach_radius,
         m_closest_point_pos);
@@ -304,16 +309,19 @@ void MainWindow::find_closest_point()
     m_closest_point_query_time = std::chrono::duration_cast<std::chrono::milliseconds>(timer_stop - timer_start).count();
 
     // Push the points in a buffer ready to be rendered.
-    std::vector<RasterizedPoints::Point> points = {
-        {
-            m_query_point_pos,
-            { 1.0, 0.4, 1.0, 1.0 } // color
-        },
-        {
+    std::vector<RasterizedPoints::Point> points;
+    // Add the query point (in grey).
+    points.push_back({
+        m_query_point_pos,
+        { 0.8, 0.8, 0.8, 1.0 }
+    });
+    // Add the closest result point (in green).
+    if (found)
+        points.push_back({
             m_closest_point_pos,
-            { 1.0, 0.0, 1.0, 0.5 } // color
-        }
-    };
+            { 0.1, 1.0, 0.1, 1.0 }
+        });
+
     m_scene_points.set_points(points);
 }
 
