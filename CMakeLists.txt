@@ -98,13 +98,15 @@ set (core_sources
     "${SRC_DIR}/core/math.h"
     "${SRC_DIR}/core/mesh.cpp"
     "${SRC_DIR}/core/mesh.h"
+    "${SRC_DIR}/core/mesh_point_cloud.cpp"
+    "${SRC_DIR}/core/mesh_point_cloud.h"
     "${SRC_DIR}/core/rasterized_mesh.cpp"
     "${SRC_DIR}/core/rasterized_mesh.h"
     "${SRC_DIR}/core/scene.cpp"
     "${SRC_DIR}/core/scene.h"
     "${SRC_DIR}/core/scene_loader.cpp"
     "${SRC_DIR}/core/scene_loader.h"
-    "${SRC_DIR}/thirdparty/nanoflann.hpp"
+    "${SRC_DIR}/thirdparty/nanoflann/nanoflann.hpp"
 )
 
 add_library(

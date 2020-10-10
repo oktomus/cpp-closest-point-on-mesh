@@ -12,6 +12,7 @@
 // Forward declarations.
 class GLFWwindow;
 namespace core { class ClosestPointQuery; }
+namespace core { class MeshPointCloud; }
 namespace core { class Scene; }
 
 namespace gui
@@ -66,6 +67,7 @@ class MainWindow
     std::unique_ptr<Shader>                   m_drawing_shader;
     std::unique_ptr<Shader>                   m_point_shader;
 
+    std::unique_ptr<core::MeshPointCloud>     m_mesh_point_cloud;
     std::unique_ptr<core::ClosestPointQuery>  m_closest_point_query;
     glm::vec3                                 m_query_point_pos;
     float                                     m_query_point_max_serach_radius;

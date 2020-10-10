@@ -2,16 +2,27 @@
 
 #include "math.h"
 
+#include <chrono>
 #include <cstddef>
+#include <inttypes.h>
+#include <iostream>
 #include <limits>
 #include <vector>
 
 namespace core
 {
 
-ClosestPointQuery::ClosestPointQuery(const Mesh& mesh)
-  : m_mesh(mesh)
-{}
+ClosestPointQuery::ClosestPointQuery(const MeshPointCloud& mesh_point_cloud)
+  : m_mesh_point_cloud(mesh_point_cloud)
+{
+    // Start a timer to know how long it takes to build the query object.
+    auto timer_start = std::chrono::high_resolution_clock::now();
+
+    auto timer_stop = std::chrono::high_resolution_clock::now();
+    auto process_time = std::chrono::duration_cast<std::chrono::milliseconds>(timer_stop - timer_start).count();
+
+    std::printf("Generated mesh query tree in %" PRId64 "ms.", process_time);
+}
 
 bool ClosestPointQuery::get_closest_point(
     const glm::vec3&    query_point,
@@ -20,11 +31,7 @@ bool ClosestPointQuery::get_closest_point(
 {
     assert(max_distance > 0.0f);
 
-    const std::vector<Mesh::Vertex>& vertices = m_mesh.get_vertices();
-    const std::size_t vertex_count = vertices.size();
-    const std::vector<unsigned int>& triangles = m_mesh.get_triangles();
-    assert(triangles.size() % 3 == 0);
-    const std::size_t triangle_count = triangles.size() / 3;
+    const std::size_t triangle_count = m_mesh_point_cloud.kdtree_get_point_count() / 3;
 
     //=> Naive implementation.
     // 1. Go through each triangle
@@ -36,13 +43,9 @@ bool ClosestPointQuery::get_closest_point(
 
     for (std::size_t triangle_index = 0; triangle_index < triangle_count; ++triangle_index)
     {
-        const std::size_t v1_index = triangles[triangle_index * 3];
-        const std::size_t v2_index = triangles[triangle_index * 3 + 1];
-        const std::size_t v3_index = triangles[triangle_index * 3 + 2];
-
-        const glm::vec3& v1 = vertices[v1_index].pos;
-        const glm::vec3& v2 = vertices[v2_index].pos;
-        const glm::vec3& v3 = vertices[v3_index].pos;
+        const glm::vec3& v1 = m_mesh_point_cloud.kdtree_get_pt(triangle_index * 3);
+        const glm::vec3& v2 = m_mesh_point_cloud.kdtree_get_pt(triangle_index * 3 + 1);
+        const glm::vec3& v3 = m_mesh_point_cloud.kdtree_get_pt(triangle_index * 3 + 2);
 
         bool success = false;
         const glm::vec3 p = closest_point_in_triangle(

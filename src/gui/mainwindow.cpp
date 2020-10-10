@@ -5,6 +5,7 @@
 
 // core includes.
 #include "core/closest_point_query.h"
+#include "core/mesh_point_cloud.h"
 #include "core/scene.h"
 #include "core/scene_loader.h"
 
@@ -158,9 +159,11 @@ void MainWindow::load_scene(const std::string& path)
     // Load the scene.
     m_scene.reset(core::load_scene_from_file(path));
 
+    // Build a point cloud of the mesh.
+    m_mesh_point_cloud.reset(new core::MeshPointCloud(m_scene->get_mesh()));
+
     // Prepare closest point queries.
-    core::ClosestPointQuery* query = new core::ClosestPointQuery(m_scene->get_mesh());
-    m_closest_point_query.reset(query);
+    m_closest_point_query.reset(new core::ClosestPointQuery(*m_mesh_point_cloud));
 }
 
 // Constructor.
@@ -322,10 +325,13 @@ void MainWindow::find_closest_point()
     auto timer_start = std::chrono::high_resolution_clock::now();
 
     // Run the query.
-    m_closest_point_found = run && m_closest_point_query->get_closest_point(
-        m_query_point_pos,
-        m_query_point_max_serach_radius,
-        m_closest_point_pos);
+    for (int i = 0; i < 100; ++i)
+    {
+        m_closest_point_found = run && m_closest_point_query->get_closest_point(
+            m_query_point_pos,
+            m_query_point_max_serach_radius,
+            m_closest_point_pos);
+    }
 
     auto timer_stop = std::chrono::high_resolution_clock::now();
     m_closest_point_query_time = std::chrono::duration_cast<std::chrono::milliseconds>(timer_stop - timer_start).count();
