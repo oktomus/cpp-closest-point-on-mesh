@@ -15,7 +15,7 @@ namespace core { class ClosestPointQuery; }
 namespace core { class Scene; }
 
 namespace gui
-{ 
+{
 
 /**
  * @brief GUI Singleton.
@@ -71,6 +71,8 @@ class MainWindow
     float                                     m_query_point_max_serach_radius;
     glm::vec3                                 m_closest_point_pos;
     std::int64_t                              m_closest_point_query_time; // milliseconds
+    bool                                      m_closest_point_found;
+    bool                                      m_animate_query_point;
 
     OrbitCamera                               m_camera;
 
@@ -82,6 +84,7 @@ class MainWindow
     void opengl_draw();
 
     void find_closest_point();
+    void animate_query_point();
 
     // GLFW Window callbacks.
     static void glfw_framebuffer_size_callback(GLFWwindow* window, int width, int height);

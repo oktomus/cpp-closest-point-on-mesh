@@ -126,6 +126,10 @@ void MainWindow::run()
         process_glfw_window_inputs();
         ImGui_ImplGlfwGL3_NewFrame();
 
+        // Animation query point.
+        if (m_animate_query_point)
+            animate_query_point();
+
         // Run query.
         if (m_closest_point_query)
             find_closest_point();
@@ -148,7 +152,13 @@ void MainWindow::release()
 
 void MainWindow::load_scene(const std::string& path)
 {
+    // Stop the running animation.
+    m_animate_query_point = false;
+
+    // Load the scene.
     m_scene.reset(core::load_scene_from_file(path));
+
+    // Prepare closest point queries.
     core::ClosestPointQuery* query = new core::ClosestPointQuery(m_scene->get_mesh());
     m_closest_point_query.reset(query);
 }
@@ -157,6 +167,7 @@ void MainWindow::load_scene(const std::string& path)
 MainWindow::MainWindow()
   : m_query_point_max_serach_radius(10.0f)
   , m_query_point_pos(-1.2f, 1.6f, 2.8f)
+  , m_animate_query_point(false)
 {}
 
 // Singleton instance.
@@ -189,9 +200,20 @@ void MainWindow::imgui_draw()
         {
             ImGui::Text("Position");
             ImGui::DragFloat3("", glm::value_ptr(m_query_point_pos), 0.1f);
+
             ImGui::Text("Maximum search radius");
             ImGui::DragFloat("", &m_query_point_max_serach_radius, 0.1f, 0.0f);
             m_query_point_max_serach_radius = std::max(m_query_point_max_serach_radius, 0.0f);
+
+            if (!m_animate_query_point && ImGui::Button("Animate query point"))
+            {
+                m_animate_query_point = true;
+            }
+            else if (m_animate_query_point && ImGui::Button("Stop animation"))
+            {
+                m_animate_query_point = false;
+            }
+
             ImGui::TreePop();
         }
 
@@ -300,7 +322,7 @@ void MainWindow::find_closest_point()
     auto timer_start = std::chrono::high_resolution_clock::now();
 
     // Run the query.
-    bool found = run && m_closest_point_query->get_closest_point(
+    m_closest_point_found = run && m_closest_point_query->get_closest_point(
         m_query_point_pos,
         m_query_point_max_serach_radius,
         m_closest_point_pos);
@@ -316,13 +338,25 @@ void MainWindow::find_closest_point()
         { 0.8, 0.8, 0.8, 1.0 }
     });
     // Add the closest result point (in green).
-    if (found)
+    if (m_closest_point_found)
         points.push_back({
             m_closest_point_pos,
             { 0.1, 1.0, 0.1, 1.0 }
         });
 
     m_scene_points.set_points(points);
+}
+
+void MainWindow::animate_query_point()
+{
+    // Try to move the query point arround the model with some wiggle.
+    const glm::vec3 towards_model = m_closest_point_pos - m_query_point_pos;
+    const glm::vec3 somewhere_else = glm::cross(towards_model, glm::vec3(0.0f, 1.0f, 0.0f));
+
+    const float wiggle = std::sin(m_time_since_startup) * 0.5f;
+
+    m_query_point_pos += towards_model * wiggle * m_frame_delta_time;
+    m_query_point_pos += somewhere_else * m_frame_delta_time;
 }
 
 // GLFW Window callbacks.
