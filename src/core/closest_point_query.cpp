@@ -44,7 +44,12 @@ bool ClosestPointQuery::get_closest_point(
         const glm::vec3& v2 = vertices[v2_index].pos;
         const glm::vec3& v3 = vertices[v3_index].pos;
 
-        const glm::vec3 p = (v1 + v2 + v3) * 0.33333f;
+        bool success = false;
+        const glm::vec3 p = closest_point_in_triangle(
+            query_point,
+            v1,
+            v2,
+            v3);
 
         const float distance2_to_triangle = distance2(p, query_point);
 

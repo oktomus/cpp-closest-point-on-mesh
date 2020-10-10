@@ -48,8 +48,13 @@ Because I'm already familiar with the first approach, I decided to implement the
 
 ## Testing
 
+## Going further
+
+- Use SIMD instructions to compute distances and closest point on triangle
+
 
 # References
 
 - [1](https://github.com/bronzelion/closest-point-on-mesh/wiki/Closest-Point-on-a-Mesh-:-Background-and-Approaches): Closest Point on a Mesh : Background and Approaches
-- 
+- [2](http://jcgt.org/published/0003/04/05/paper.pdf): Fast Distance Queries for Triangles, Lines, andPoints using SSE Instructions
+- [3](https://www.geometrictools.com/Documentation/DistancePoint3Triangle3.pdf): Distance Between Point and Triangle in 3D

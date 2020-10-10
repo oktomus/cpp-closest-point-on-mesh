@@ -287,6 +287,10 @@ void MainWindow::opengl_draw()
 
 void MainWindow::find_closest_point()
 {
+    // Invalid search radius, cancel.
+    if (m_query_point_max_serach_radius <= 0.0f)
+        return;
+
     // Start a timer to know how long it takes.
     auto timer_start = std::chrono::high_resolution_clock::now();
 
