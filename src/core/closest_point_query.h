@@ -34,6 +34,16 @@ class ClosestPointQuery
 
   private:
     const MeshPointCloud& m_mesh_point_cloud;
+
+    // nanoflann kdtree. Will be used to speed up look up time.
+    typedef nanoflann::KDTreeSingleIndexAdaptor<
+        nanoflann::L2_Simple_Adaptor<float, MeshPointCloud>,
+        MeshPointCloud,
+        3, /* Go 3D! */
+        size_t> TreeIndex;
+    TreeIndex m_tree_index;
+
+    typedef std::vector<std::pair<std::size_t, float>> TreeSearchVectorResult;
 };
 
 } // namespace core
