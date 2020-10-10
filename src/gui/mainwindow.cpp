@@ -123,9 +123,6 @@ void MainWindow::run()
             m_last_fps_capture_time += 1.0;
         }
 
-        process_glfw_window_inputs();
-        ImGui_ImplGlfwGL3_NewFrame();
-
         // Animation query point.
         if (m_animate_query_point)
             animate_query_point();
@@ -133,6 +130,9 @@ void MainWindow::run()
         // Run query.
         if (m_closest_point_query)
             find_closest_point();
+
+        process_glfw_window_inputs();
+        ImGui_ImplGlfwGL3_NewFrame();
 
         imgui_draw();
         opengl_draw();
@@ -351,12 +351,13 @@ void MainWindow::animate_query_point()
 {
     // Try to move the query point arround the model with some wiggle.
     const glm::vec3 towards_model = m_closest_point_pos - m_query_point_pos;
-    const glm::vec3 somewhere_else = glm::cross(towards_model, glm::vec3(0.0f, 1.0f, 0.0f));
+    const glm::vec3 fake_tangent = glm::cross(towards_model, glm::vec3(0.0f, 1.0f, 0.0f));
 
-    const float wiggle = std::sin(m_time_since_startup) * 0.5f;
+    const float wiggle = std::sin(m_time_since_startup * 0.5f) * 0.5f;
 
     m_query_point_pos += towards_model * wiggle * m_frame_delta_time;
-    m_query_point_pos += somewhere_else * m_frame_delta_time;
+    m_query_point_pos += fake_tangent * m_frame_delta_time;
+    m_query_point_pos -= glm::cross(fake_tangent, towards_model) * wiggle * m_frame_delta_time;
 }
 
 // GLFW Window callbacks.
