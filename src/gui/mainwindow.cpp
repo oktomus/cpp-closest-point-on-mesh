@@ -16,6 +16,7 @@
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 
 // Standard includes.
 #include <cassert>
@@ -234,7 +235,7 @@ void MainWindow::imgui_draw()
             ImGui::Text("Position");
             glm::vec3 readonly_pos = m_closest_point_pos;
             ImGui::DragFloat3("", glm::value_ptr(readonly_pos));
-            ImGui::Text("Time %" PRId64 "ms", m_closest_point_query_time);
+            ImGui::Text("Last query time %" PRId64 "ms", m_closest_point_query_time);
             ImGui::TreePop();
         }
 
@@ -333,13 +334,10 @@ void MainWindow::find_closest_point()
     auto timer_start = std::chrono::high_resolution_clock::now();
 
     // Run the query.
-    for (int i = 0; i < 100; ++i)
-    {
-        m_closest_point_found = run && m_closest_point_query->get_closest_point(
-            m_query_point_pos,
-            m_query_point_max_serach_radius,
-            m_closest_point_pos);
-    }
+    m_closest_point_found = run && m_closest_point_query->get_closest_point(
+        m_query_point_pos,
+        m_query_point_max_serach_radius,
+        m_closest_point_pos);
 
     auto timer_stop = std::chrono::high_resolution_clock::now();
     m_closest_point_query_time = std::chrono::duration_cast<std::chrono::milliseconds>(timer_stop - timer_start).count();
@@ -363,14 +361,17 @@ void MainWindow::find_closest_point()
 
 void MainWindow::animate_query_point()
 {
-    // Try to move the query point arround the model with some wiggle.
-    const glm::vec3 towards_model = m_closest_point_pos - m_query_point_pos;
-    const glm::vec3 fake_tangent = glm::cross(towards_model, glm::vec3(0.0f, 1.0f, 0.0f));
-
-    const float wiggle = std::sin(m_time_since_startup) * 0.5f;
-
-    m_query_point_pos += fake_tangent * wiggle * m_frame_delta_time;
-    m_query_point_pos += glm::cross(fake_tangent, towards_model) * wiggle * m_frame_delta_time;
+    // Rotate the query point arround the model.
+    const float rotation =
+        m_frame_delta_time
+        + std::sin(m_time_since_startup * 0.5f) * m_frame_delta_time;
+    m_query_point_pos -= m_closest_point_pos;
+    m_query_point_pos =
+        glm::rotate(
+            m_query_point_pos,
+            rotation,
+            glm::vec3(1.0f, 1.0f, 1.0f));
+    m_query_point_pos += m_closest_point_pos;
 }
 
 // GLFW Window callbacks.
