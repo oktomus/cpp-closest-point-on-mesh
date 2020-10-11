@@ -159,6 +159,14 @@ void MainWindow::load_scene(const std::string& path)
     // Load the scene.
     m_scene.reset(core::load_scene_from_file(path));
 
+    if (m_scene->get_mesh_count() == 0)
+    {
+        std::cerr << "No mesh in the scene.\n";
+        m_mesh_point_cloud.reset(nullptr);
+        m_closest_point_query.reset(nullptr);
+        return;
+    }
+
     // Build a point cloud of the mesh.
     m_mesh_point_cloud.reset(new core::MeshPointCloud(m_scene->get_mesh()));
 
@@ -359,11 +367,10 @@ void MainWindow::animate_query_point()
     const glm::vec3 towards_model = m_closest_point_pos - m_query_point_pos;
     const glm::vec3 fake_tangent = glm::cross(towards_model, glm::vec3(0.0f, 1.0f, 0.0f));
 
-    const float wiggle = std::sin(m_time_since_startup * 0.5f) * 0.5f;
+    const float wiggle = std::sin(m_time_since_startup) * 0.5f;
 
-    m_query_point_pos += towards_model * wiggle * m_frame_delta_time;
-    m_query_point_pos += fake_tangent * m_frame_delta_time;
-    m_query_point_pos -= glm::cross(fake_tangent, towards_model) * wiggle * m_frame_delta_time;
+    m_query_point_pos += fake_tangent * wiggle * m_frame_delta_time;
+    m_query_point_pos += glm::cross(fake_tangent, towards_model) * wiggle * m_frame_delta_time;
 }
 
 // GLFW Window callbacks.

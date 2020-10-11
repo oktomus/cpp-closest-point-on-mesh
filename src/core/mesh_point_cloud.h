@@ -57,6 +57,11 @@ class MeshPointCloud
         }
     }
 
+    inline std::size_t get_triangle_count() const
+    {
+        return m_points.size() / 3;
+    }
+
     // nanoflann compatibility implementaiton.
     inline std::size_t kdtree_get_point_count() const
     {

@@ -10,7 +10,7 @@ namespace core
 
 Scene::Scene(const std::vector<Mesh>& meshes)
   : m_meshes(meshes)
-{ 
+{
     // Prepare to render meshes.
     m_drawing_meshes.reserve(m_meshes.size());
 
@@ -20,6 +20,11 @@ Scene::Scene(const std::vector<Mesh>& meshes)
         drawing_mesh.prepare();
         m_drawing_meshes.push_back(drawing_mesh);
     }
+}
+
+std::size_t Scene::get_mesh_count() const
+{
+    return m_meshes.size();
 }
 
 const Mesh& Scene::get_mesh() const

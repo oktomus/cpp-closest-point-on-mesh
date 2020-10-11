@@ -38,10 +38,7 @@ bool ClosestPointQuery::get_closest_point(
 {
     assert(max_distance > 0.0f);
 
-    static nanoflann::SearchParams search_params(
-        32,    // ignored param
-        0.0f,  // epsilon
-        true); // true means we want results to be sorted by squared dist
+    const float max_distance2 = max_distance * max_distance;
 
     // Take the 10 closest and keep the best out of them.
     const std::size_t expected_result_count = 200;
@@ -57,11 +54,11 @@ bool ClosestPointQuery::get_closest_point(
     bool found = false;
     float closest_distance2 = 0.0f;
 
-    for (std::size_t result_index = 0; result_index < num_results; ++result_index)
+    for (std::size_t i = 0; i < num_results; ++i)
     {
         // Ask the triangle to the point cloud.
         glm::vec3 v1, v2, v3;
-        m_mesh_point_cloud.get_triangle(ret_index[result_index], v1, v2, v3);
+        m_mesh_point_cloud.get_triangle(ret_index[i], v1, v2, v3);
 
         // Compute the point on the triangle.
         glm::vec3 p = closest_point_in_triangle(
@@ -73,11 +70,12 @@ bool ClosestPointQuery::get_closest_point(
         // Keep the best.
         const float distance2_to_triangle = distance2(p, query_point);
 
-        if (distance2_to_triangle < max_distance
+        if (distance2_to_triangle < max_distance2
             && (!found || distance2_to_triangle < closest_distance2))
         {
             found = true;
             result = p;
+            closest_distance2 = distance2_to_triangle;
         }
     }
 
