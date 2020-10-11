@@ -67,7 +67,11 @@ void MainWindow::init(const int window_width, const int window_height)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    m_glfw_window = glfwCreateWindow(window_width, window_height, "app.gui", NULL, NULL);
+
+    GLFWmonitor* monitor =  glfwGetPrimaryMonitor();
+    const GLFWvidmode* video_mode = glfwGetVideoMode(monitor);
+
+    m_glfw_window = glfwCreateWindow(video_mode->width, video_mode->height, "app.gui", NULL, NULL);
 
     if (!m_glfw_window)
     {
