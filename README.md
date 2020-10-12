@@ -16,13 +16,13 @@ The obj files I have used are available in [common-3d-test-models](https://githu
 - Pre-process time: KDTree generation of the mesh point cloud
 - Compute time: finding the closest point on the mesh of a given point
 
-| OBJ | Vertex count | Triangles count | Pre-process time | Compute time |
-|----|-----|-----|----|----|
-|teapot.obj|~19k|~6k|1ms|<1ms
-|fandisk.obj|~39k|~13k|2ms|~2ms
-|stanford-bunny.obj|~209k|~70k|23ms|~2ms
-|armadillo.obj|~300k|~100k|36ms|~5ms
-|xyzrgb_dragon.obj|~750k|~250k|77ms|~5ms to ~10ms
+| OBJ | Vertex count | Triangles count | Pre-process time | Compute time (1 query) | Compute time (1000 query) |
+|----|-----|-----|----|----|-----|
+|teapot.obj|~19k|~6k|1ms|<1ms|~11ms|
+|fandisk.obj|~39k|~13k|2ms|<1ms|~18ms|
+|stanford-bunny.obj|~209k|~70k|23ms|<1ms|~26ms|
+|armadillo.obj|~300k|~100k|36ms|<1ms|~40ms|
+|xyzrgb_dragon.obj|~750k|~250k|77ms|<1ms|~40ms|
 
 The search radius doesn't effectively affect the performances because of the way I'm using the KDTree. Although, if the query point is far away from the mesh, the compute time will increase. A simple point to bbox distance check could avoid that.
 

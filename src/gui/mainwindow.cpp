@@ -189,6 +189,7 @@ MainWindow::MainWindow()
   : m_query_point_max_serach_radius(10.0f)
   , m_query_point_pos(1.0f, 1.0f, 1.0f)
   , m_animate_query_point(false)
+  , m_query_count(1)
 {}
 
 // Singleton instance.
@@ -230,6 +231,8 @@ void MainWindow::imgui_draw()
             ImGui::DragFloat("Search radius", &search_radius, 0.5f, 0.0f, 100.0f);
             if (search_radius != m_query_point_max_serach_radius)
                 m_query_point_max_serach_radius = search_radius;
+
+            ImGui::DragInt("Query count", &m_query_count, 1, 1, 1000);
 
             if (!m_animate_query_point && ImGui::Button("Animate query point"))
             {
@@ -362,11 +365,14 @@ void MainWindow::find_closest_point()
     // Start a timer to know how long it takes.
     auto timer_start = std::chrono::high_resolution_clock::now();
 
-    // Run the query.
-    m_closest_point_found = run && m_closest_point_query->get_closest_point(
-        m_query_point_pos,
-        m_query_point_max_serach_radius,
-        m_closest_point_pos);
+    // Run the query (multiple times if you want to see it's speed).
+    for (int i = 0; i < m_query_count; ++i)
+    {
+        m_closest_point_found = run && m_closest_point_query->get_closest_point(
+            m_query_point_pos,
+            m_query_point_max_serach_radius,
+            m_closest_point_pos);
+    }
 
     auto timer_stop = std::chrono::high_resolution_clock::now();
     m_closest_point_query_time = std::chrono::duration_cast<std::chrono::milliseconds>(timer_stop - timer_start).count();

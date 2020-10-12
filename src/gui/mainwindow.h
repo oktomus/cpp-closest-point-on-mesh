@@ -95,6 +95,7 @@ class MainWindow
     glm::vec3                                 m_closest_point_pos; 
     std::int64_t                              m_closest_point_query_time; // milliseconds
     bool                                      m_closest_point_found;
+    int                                       m_query_count; // call the algorithm multiple times to see its speed
 
     // The application is able to move the query point.
     // I made this to quickly detect any incorrect behavior from the implementation.

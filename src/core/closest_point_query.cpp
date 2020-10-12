@@ -44,7 +44,7 @@ bool ClosestPointQuery::get_closest_point(
     // Define how many points we take from the tree to find the closest point on the mesh.
     // A number that is too low will generate incorrect results when the mesh density is high.
     // The points we process are the nearest points in the cloud to the query point.
-    const std::size_t point_to_process_max_count = 2000;
+    const std::size_t point_to_process_max_count = 100;
     std::vector<std::size_t> ret_index(point_to_process_max_count);
     std::vector<float> out_dist_sqr(point_to_process_max_count);
 
