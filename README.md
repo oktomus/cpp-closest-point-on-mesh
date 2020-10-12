@@ -1,43 +1,26 @@
 This is an example implementation of the *closest point on mesh* algorithm. Given any 3D point and any mesh, it should find the closest point on the mesh to the given point in a maximum given radius. A GUI comes with it to demonstrate the results and performance. Automated tests are available in the program. They test the low level methods of the algorithm.
 
+:noteboo: [Documentation](https://oktomus.com/cpp-closest-point-on-mesh)
+
 # Demo
 
 # Performance
 
-Here are some performance results of my implementation. Tests were made with an AMD Ryzen 5 3600 3.59Ghz. The implemntation only use one core.
+Tests were made with an AMD Ryzen 5 3600 @ 3.59Ghz. The implemntation only use one core.
 In the following tests, all vertices were normalized in the range [-1, 1].
 
 The obj files I have used are available in [common-3d-test-models](https://github.com/alecjacobson/common-3d-test-models).
 
-teapot.obj
-Vertex count : ~19k
-Triangle count : ~6k
-Average process time (any radius) : <1ms
-Precompute time : 1ms
+- Pre-process time: KDTree generation of the mesh point cloud
+- Compute time: finding the closest point on the mesh of a given point
 
-stanford-bunny.obj
-Vertex count : ~209k
-Triangle count : ~70k
-Average process time (any radius) : ~2ms
-Precompute time : 23ms
-
-fandisk.obj
-Vertex count : ~39k
-Triangle count : ~13k
-Average process time (any radius) : ~2ms
-Precompute time : 2ms
-
-armadillo.obj
-Vertex count : ~300k
-Triangle count : ~100k
-Average process time (any radius) : ~5ms
-Precompute time : 36ms
-
-xyzrgb_dragon.obj
-Vertex count : ~750k
-Triangle count : ~250k
-Average process time (any radius) : ~5ms
-Precompute time : 77ms
+| OBJ | Vertex count | Triangles count | Pre-process time | Compute time |
+|----|-----|-----|----|----|
+|teapot.obj|~19k|~6k|1ms|<1ms
+|fandisk.obj|~39k|~13k|2ms|~2ms
+|stanford-bunny.obj|~209k|~70k|23ms|~2ms
+|armadillo.obj|~300k|~100k|36ms|~5ms
+|xyzrgb_dragon.obj|~750k|~250k|77ms|~5ms to ~10ms
 
 # Limitations
 
