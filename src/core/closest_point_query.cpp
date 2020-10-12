@@ -40,20 +40,29 @@ bool ClosestPointQuery::get_closest_point(
 
     const float max_distance2 = max_distance * max_distance;
 
-    // Take the 10 closest and keep the best out of them.
-    const std::size_t expected_result_count = 200;
-    std::vector<std::size_t> ret_index(expected_result_count);
-    std::vector<float> out_dist_sqr(expected_result_count);
+    // Define how many points we take from the tree to find the closest point in the mesh.
+    // A number that is too low will generate incorrect results when the mesh density is high.
+    // The points we process are the closest points to the query point.
+    const std::size_t point_to_process_max_count = 2000;
+    std::vector<std::size_t> ret_index(point_to_process_max_count);
+    std::vector<float> out_dist_sqr(point_to_process_max_count);
+
+    // Use the KDTree to find the closest points.
     const std::size_t num_results =
         m_tree_index.knnSearch(
             glm::value_ptr(query_point),
-            expected_result_count,
+            point_to_process_max_count,
             &ret_index[0],
             &out_dist_sqr[0]);
 
     bool found = false;
     float closest_distance2 = 0.0f;
 
+    // Find the closest point on the mesh using all points near to `query_point`.
+    // To do so, we use the triangle on which each point is laying and compute the closest
+    // point to the quer_point that is on the triangle.
+    // For all these "triangles points", we keep the L2 closest one to the query point.
+    // FIXME: We analyse the same triangles multiple times.
     for (std::size_t i = 0; i < num_results; ++i)
     {
         // Ask the triangle to the point cloud.

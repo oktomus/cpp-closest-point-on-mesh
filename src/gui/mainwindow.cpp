@@ -182,7 +182,7 @@ void MainWindow::load_scene(const std::string& path)
 // Constructor.
 MainWindow::MainWindow()
   : m_query_point_max_serach_radius(10.0f)
-  , m_query_point_pos(-1.2f, 1.6f, 2.8f)
+  , m_query_point_pos(1.0f, 1.0f, 1.0f)
   , m_animate_query_point(false)
 {}
 
@@ -211,15 +211,20 @@ void MainWindow::imgui_draw()
     {
         ImGui::Begin("Controls", &show_window);
 
+        ImGui::TextColored(ImVec4(0.8f, 0.8f, 0.8f, 1.0f), "In white: the query point");
+        ImGui::TextColored(ImVec4(0.1f, 1.0f, 0.1f, 1.0f), "In green: result point (closest point on the mesh)");
+
+        ImGui::Spacing();
+
         if (first_display) ImGui::SetNextTreeNodeOpen(true);
         if (ImGui::TreeNode("Closest point query settings"))
         {
-            ImGui::Text("Position");
-            ImGui::DragFloat3("", glm::value_ptr(m_query_point_pos), 0.1f);
+            ImGui::DragFloat3("Position", glm::value_ptr(m_query_point_pos), 0.05f);
 
-            ImGui::Text("Maximum search radius");
-            ImGui::DragFloat("", &m_query_point_max_serach_radius, 0.1f, 0.0f);
-            m_query_point_max_serach_radius = std::max(m_query_point_max_serach_radius, 0.0f);
+            float search_radius = m_query_point_max_serach_radius;
+            ImGui::DragFloat("Search radius", &search_radius, 0.5f, 0.0f, 100.0f);
+            if (search_radius != m_query_point_max_serach_radius)
+                m_query_point_max_serach_radius = search_radius;
 
             if (!m_animate_query_point && ImGui::Button("Animate query point"))
             {
@@ -236,10 +241,25 @@ void MainWindow::imgui_draw()
         if (first_display) ImGui::SetNextTreeNodeOpen(true);
         if (ImGui::TreeNode("Closest point result"))
         {
-            ImGui::Text("Position");
             glm::vec3 readonly_pos = m_closest_point_pos;
-            ImGui::DragFloat3("", glm::value_ptr(readonly_pos));
+            ImGui::DragFloat3("Position", glm::value_ptr(readonly_pos));
             ImGui::Text("Last query time %" PRId64 "ms", m_closest_point_query_time);
+            ImGui::TreePop();
+        }
+
+        if (first_display) ImGui::SetNextTreeNodeOpen(true);
+        if (ImGui::TreeNode("Camera"))
+        {
+            float fov = m_camera.get_fov();
+            ImGui::DragFloat("FOV", &fov, 0.5f, 1.0f, 90.0f);
+            if (fov != m_camera.get_fov())
+                m_camera.set_fov(fov);
+
+            float distance = m_camera.get_distance_to_target();
+            ImGui::DragFloat("Distance", &distance, 0.5f, 0.0f, 100.0f);
+            if (fov != m_camera.get_distance_to_target())
+                m_camera.set_distance_to_target(distance);
+
             ImGui::TreePop();
         }
 

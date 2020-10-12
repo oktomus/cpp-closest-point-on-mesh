@@ -2,6 +2,47 @@ This is an example implementation of the *closest point on mesh* algorithm. Give
 
 # Demo
 
+# Performance
+
+Here are some performance results of my implementation. Tests were made with an AMD Ryzen 5 3600 3.59Ghz. The implemntation only use one core.
+In the following tests, all vertices were normalized in the range [-1, 1].
+
+The obj files I have used are available in [common-3d-test-models](https://github.com/alecjacobson/common-3d-test-models).
+
+teapot.obj
+Vertex count : ~19k
+Triangle count : ~6k
+Average process time (any radius) : <1ms
+Precompute time : 1ms
+
+stanford-bunny.obj
+Vertex count : ~209k
+Triangle count : ~70k
+Average process time (any radius) : ~2ms
+Precompute time : 23ms
+
+fandisk.obj
+Vertex count : ~39k
+Triangle count : ~13k
+Average process time (any radius) : ~2ms
+Precompute time : 2ms
+
+armadillo.obj
+Vertex count : ~300k
+Triangle count : ~100k
+Average process time (any radius) : ~5ms
+Precompute time : 36ms
+
+xyzrgb_dragon.obj
+Vertex count : ~750k
+Triangle count : ~250k
+Average process time (any radius) : ~5ms
+Precompute time : 77ms
+
+# Limitations
+
+- A point far away makes performance works. A simple check distance to bbox will fix this
+
 # Build
 
 This program works only on Linux and require the following dependencies:

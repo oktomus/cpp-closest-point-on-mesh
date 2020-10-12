@@ -15,7 +15,7 @@ OrbitCamera::OrbitCamera()
     m_position = { 0, 0, 0 };
     m_target = { 0, 0, 0 };
     m_camera_pivot_rotation = { 0, 0 ,0 };
-    m_distance_to_target = 20;
+    m_distance_to_target = 5.0f;
     m_fov = 45.0f;
     compute_position();
 }
@@ -23,6 +23,27 @@ OrbitCamera::OrbitCamera()
 glm::vec3 OrbitCamera::get_position() const
 {
     return m_position;
+}
+
+float OrbitCamera::get_fov() const
+{
+    return m_fov;
+}
+
+void OrbitCamera::set_fov(float fov)
+{
+    m_fov = fov;
+}
+
+float OrbitCamera::get_distance_to_target() const
+{
+    return m_distance_to_target;
+}
+
+void OrbitCamera::set_distance_to_target(float distance)
+{
+    m_distance_to_target = distance;
+    compute_position();
 }
 
 glm::mat4 OrbitCamera::projection(const int screen_width, const int screen_height) const
@@ -64,16 +85,6 @@ void OrbitCamera::glfw_process_mouse_move(double xpos, double ypos, float delta_
         m_camera_pivot_rotation.x += delta_y * delta_time * y_weight;
         compute_position();
     }
-    else if (m_pan_when_mouse_move)
-    {
-        float delta_x = xpos - m_last_mouse_pos_x;
-        float delta_y = ypos - m_last_mouse_pos_y;
-
-        float x_weight = -std::abs(delta_x * 0.8f);
-
-        m_target.y -= delta_y * delta_time * 20.0f;
-        compute_position();
-    }
 
     m_last_mouse_pos_x = xpos;
     m_last_mouse_pos_y = ypos;
@@ -82,13 +93,11 @@ void OrbitCamera::glfw_process_mouse_move(double xpos, double ypos, float delta_
 void OrbitCamera::glfw_process_mouse_action(int button, int action, int mods, float delta_time)
 {
     m_rotate_when_mouse_move = button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS;
-    m_pan_when_mouse_move = !m_rotate_when_mouse_move && button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS;
 }
 
 void OrbitCamera::glfw_process_scroll(double xoffset, double yoffset, float delta_time)
 {
-    m_distance_to_target = std::max(1.0f, m_distance_to_target - float(yoffset) * 200.0f * delta_time);
-    compute_position();
+    return;
 }
 
 void OrbitCamera::compute_position()

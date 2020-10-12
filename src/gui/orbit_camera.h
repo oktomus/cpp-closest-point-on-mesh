@@ -15,6 +15,12 @@ class OrbitCamera
 
     glm::vec3 get_position() const;
 
+    float get_fov() const;
+    void set_fov(const float fov);
+
+    float get_distance_to_target() const;
+    void set_distance_to_target(const float distance);
+
     glm::mat4 projection(const int screen_width, const int screen_height) const;
     glm::mat4 view() const;
     glm::vec3 up() const;
@@ -30,7 +36,6 @@ class OrbitCamera
     float       m_distance_to_target;
     float       m_fov;
     bool        m_rotate_when_mouse_move;
-    bool        m_pan_when_mouse_move;
     float       m_last_mouse_pos_x;
     float       m_last_mouse_pos_y;
 

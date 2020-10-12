@@ -64,12 +64,17 @@ namespace
     std::vector<Mesh> load_meshes_from_file(const std::string& file_path)
     {
         Assimp::Importer importer;
+
+        // Normalize the scene in [-1, 1]
+        importer.SetPropertyInteger("PP_PTV_NORMALIZE", 1);
+
         const aiScene* scene = importer.ReadFile(
             file_path, 
             aiProcess_Triangulate 
             | aiProcess_FlipUVs
             | aiProcess_GenNormals
-            | aiProcess_ForceGenNormals);
+            | aiProcess_ForceGenNormals
+            | aiProcess_PreTransformVertices);
 
         if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
         {
