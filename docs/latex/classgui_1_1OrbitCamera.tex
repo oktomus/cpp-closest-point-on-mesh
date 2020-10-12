@@ -1,0 +1,127 @@
+\hypertarget{classgui_1_1OrbitCamera}{}\doxysection{gui\+::Orbit\+Camera Class Reference}
+\label{classgui_1_1OrbitCamera}\index{gui::OrbitCamera@{gui::OrbitCamera}}
+
+
+Camera designed to rotate around a 3D model.  
+
+
+
+
+{\ttfamily \#include $<$orbit\+\_\+camera.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classgui_1_1OrbitCamera_a44e5f11fadb083deab3b4fe79943d0e8}{Orbit\+Camera}} ()
+\item 
+glm\+::vec3 \mbox{\hyperlink{classgui_1_1OrbitCamera_a816b0c24c5ee5bb72ceb08d70ac1b529}{get\+\_\+position}} () const
+\item 
+float \mbox{\hyperlink{classgui_1_1OrbitCamera_abd585e1f83559dc2e5c2b49484466682}{get\+\_\+fov}} () const
+\item 
+void \mbox{\hyperlink{classgui_1_1OrbitCamera_acb8aec1c082df3f56e73281b02dcbcfa}{set\+\_\+fov}} (const float fov)
+\item 
+float \mbox{\hyperlink{classgui_1_1OrbitCamera_a8884c4db7aad6b94022e778810494138}{get\+\_\+distance\+\_\+to\+\_\+target}} () const
+\item 
+void \mbox{\hyperlink{classgui_1_1OrbitCamera_a839060a720b6670cd88978fcbeee4075}{set\+\_\+distance\+\_\+to\+\_\+target}} (const float distance)
+\item 
+glm\+::mat4 \mbox{\hyperlink{classgui_1_1OrbitCamera_af91ce08db95266308db333574ef03cd7}{projection}} (const int screen\+\_\+width, const int screen\+\_\+height) const
+\item 
+glm\+::mat4 \mbox{\hyperlink{classgui_1_1OrbitCamera_abd1cfa3cb784d613730f7be8a9e1b0dd}{view}} () const
+\item 
+glm\+::vec3 \mbox{\hyperlink{classgui_1_1OrbitCamera_a2e9947e03d8d400b40bf553059029941}{up}} () const
+\item 
+void \mbox{\hyperlink{classgui_1_1OrbitCamera_a43a9cf053fa6f057296714bb4935cf02}{glfw\+\_\+process\+\_\+mouse\+\_\+move}} (double xpos, double ypos, float delta\+\_\+time)
+\item 
+void \mbox{\hyperlink{classgui_1_1OrbitCamera_a6db9ba7f45698f6e1cb0cfab12d6526d}{glfw\+\_\+process\+\_\+mouse\+\_\+action}} (int button, int action, int mods, float delta\+\_\+time)
+\item 
+void \mbox{\hyperlink{classgui_1_1OrbitCamera_acdd790cd99fd55954daa17771ffd8f5e}{glfw\+\_\+process\+\_\+scroll}} (double xoffset, double yoffset, float delta\+\_\+time)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Camera designed to rotate around a 3D model. 
+
+The camera is able to listen to G\+L\+FW events. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classgui_1_1OrbitCamera_a44e5f11fadb083deab3b4fe79943d0e8}\label{classgui_1_1OrbitCamera_a44e5f11fadb083deab3b4fe79943d0e8}} 
+\index{gui::OrbitCamera@{gui::OrbitCamera}!OrbitCamera@{OrbitCamera}}
+\index{OrbitCamera@{OrbitCamera}!gui::OrbitCamera@{gui::OrbitCamera}}
+\doxysubsubsection{\texorpdfstring{OrbitCamera()}{OrbitCamera()}}
+{\footnotesize\ttfamily gui\+::\+Orbit\+Camera\+::\+Orbit\+Camera (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classgui_1_1OrbitCamera_a8884c4db7aad6b94022e778810494138}\label{classgui_1_1OrbitCamera_a8884c4db7aad6b94022e778810494138}} 
+\index{gui::OrbitCamera@{gui::OrbitCamera}!get\_distance\_to\_target@{get\_distance\_to\_target}}
+\index{get\_distance\_to\_target@{get\_distance\_to\_target}!gui::OrbitCamera@{gui::OrbitCamera}}
+\doxysubsubsection{\texorpdfstring{get\_distance\_to\_target()}{get\_distance\_to\_target()}}
+{\footnotesize\ttfamily float gui\+::\+Orbit\+Camera\+::get\+\_\+distance\+\_\+to\+\_\+target (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classgui_1_1OrbitCamera_abd585e1f83559dc2e5c2b49484466682}\label{classgui_1_1OrbitCamera_abd585e1f83559dc2e5c2b49484466682}} 
+\index{gui::OrbitCamera@{gui::OrbitCamera}!get\_fov@{get\_fov}}
+\index{get\_fov@{get\_fov}!gui::OrbitCamera@{gui::OrbitCamera}}
+\doxysubsubsection{\texorpdfstring{get\_fov()}{get\_fov()}}
+{\footnotesize\ttfamily float gui\+::\+Orbit\+Camera\+::get\+\_\+fov (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classgui_1_1OrbitCamera_a816b0c24c5ee5bb72ceb08d70ac1b529}\label{classgui_1_1OrbitCamera_a816b0c24c5ee5bb72ceb08d70ac1b529}} 
+\index{gui::OrbitCamera@{gui::OrbitCamera}!get\_position@{get\_position}}
+\index{get\_position@{get\_position}!gui::OrbitCamera@{gui::OrbitCamera}}
+\doxysubsubsection{\texorpdfstring{get\_position()}{get\_position()}}
+{\footnotesize\ttfamily glm\+::vec3 gui\+::\+Orbit\+Camera\+::get\+\_\+position (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classgui_1_1OrbitCamera_a6db9ba7f45698f6e1cb0cfab12d6526d}\label{classgui_1_1OrbitCamera_a6db9ba7f45698f6e1cb0cfab12d6526d}} 
+\index{gui::OrbitCamera@{gui::OrbitCamera}!glfw\_process\_mouse\_action@{glfw\_process\_mouse\_action}}
+\index{glfw\_process\_mouse\_action@{glfw\_process\_mouse\_action}!gui::OrbitCamera@{gui::OrbitCamera}}
+\doxysubsubsection{\texorpdfstring{glfw\_process\_mouse\_action()}{glfw\_process\_mouse\_action()}}
+{\footnotesize\ttfamily void gui\+::\+Orbit\+Camera\+::glfw\+\_\+process\+\_\+mouse\+\_\+action (\begin{DoxyParamCaption}\item[{int}]{button,  }\item[{int}]{action,  }\item[{int}]{mods,  }\item[{float}]{delta\+\_\+time }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classgui_1_1OrbitCamera_a43a9cf053fa6f057296714bb4935cf02}\label{classgui_1_1OrbitCamera_a43a9cf053fa6f057296714bb4935cf02}} 
+\index{gui::OrbitCamera@{gui::OrbitCamera}!glfw\_process\_mouse\_move@{glfw\_process\_mouse\_move}}
+\index{glfw\_process\_mouse\_move@{glfw\_process\_mouse\_move}!gui::OrbitCamera@{gui::OrbitCamera}}
+\doxysubsubsection{\texorpdfstring{glfw\_process\_mouse\_move()}{glfw\_process\_mouse\_move()}}
+{\footnotesize\ttfamily void gui\+::\+Orbit\+Camera\+::glfw\+\_\+process\+\_\+mouse\+\_\+move (\begin{DoxyParamCaption}\item[{double}]{xpos,  }\item[{double}]{ypos,  }\item[{float}]{delta\+\_\+time }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classgui_1_1OrbitCamera_acdd790cd99fd55954daa17771ffd8f5e}\label{classgui_1_1OrbitCamera_acdd790cd99fd55954daa17771ffd8f5e}} 
+\index{gui::OrbitCamera@{gui::OrbitCamera}!glfw\_process\_scroll@{glfw\_process\_scroll}}
+\index{glfw\_process\_scroll@{glfw\_process\_scroll}!gui::OrbitCamera@{gui::OrbitCamera}}
+\doxysubsubsection{\texorpdfstring{glfw\_process\_scroll()}{glfw\_process\_scroll()}}
+{\footnotesize\ttfamily void gui\+::\+Orbit\+Camera\+::glfw\+\_\+process\+\_\+scroll (\begin{DoxyParamCaption}\item[{double}]{xoffset,  }\item[{double}]{yoffset,  }\item[{float}]{delta\+\_\+time }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classgui_1_1OrbitCamera_af91ce08db95266308db333574ef03cd7}\label{classgui_1_1OrbitCamera_af91ce08db95266308db333574ef03cd7}} 
+\index{gui::OrbitCamera@{gui::OrbitCamera}!projection@{projection}}
+\index{projection@{projection}!gui::OrbitCamera@{gui::OrbitCamera}}
+\doxysubsubsection{\texorpdfstring{projection()}{projection()}}
+{\footnotesize\ttfamily glm\+::mat4 gui\+::\+Orbit\+Camera\+::projection (\begin{DoxyParamCaption}\item[{const int}]{screen\+\_\+width,  }\item[{const int}]{screen\+\_\+height }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classgui_1_1OrbitCamera_a839060a720b6670cd88978fcbeee4075}\label{classgui_1_1OrbitCamera_a839060a720b6670cd88978fcbeee4075}} 
+\index{gui::OrbitCamera@{gui::OrbitCamera}!set\_distance\_to\_target@{set\_distance\_to\_target}}
+\index{set\_distance\_to\_target@{set\_distance\_to\_target}!gui::OrbitCamera@{gui::OrbitCamera}}
+\doxysubsubsection{\texorpdfstring{set\_distance\_to\_target()}{set\_distance\_to\_target()}}
+{\footnotesize\ttfamily void gui\+::\+Orbit\+Camera\+::set\+\_\+distance\+\_\+to\+\_\+target (\begin{DoxyParamCaption}\item[{const float}]{distance }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classgui_1_1OrbitCamera_acb8aec1c082df3f56e73281b02dcbcfa}\label{classgui_1_1OrbitCamera_acb8aec1c082df3f56e73281b02dcbcfa}} 
+\index{gui::OrbitCamera@{gui::OrbitCamera}!set\_fov@{set\_fov}}
+\index{set\_fov@{set\_fov}!gui::OrbitCamera@{gui::OrbitCamera}}
+\doxysubsubsection{\texorpdfstring{set\_fov()}{set\_fov()}}
+{\footnotesize\ttfamily void gui\+::\+Orbit\+Camera\+::set\+\_\+fov (\begin{DoxyParamCaption}\item[{const float}]{fov }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classgui_1_1OrbitCamera_a2e9947e03d8d400b40bf553059029941}\label{classgui_1_1OrbitCamera_a2e9947e03d8d400b40bf553059029941}} 
+\index{gui::OrbitCamera@{gui::OrbitCamera}!up@{up}}
+\index{up@{up}!gui::OrbitCamera@{gui::OrbitCamera}}
+\doxysubsubsection{\texorpdfstring{up()}{up()}}
+{\footnotesize\ttfamily glm\+::vec3 gui\+::\+Orbit\+Camera\+::up (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classgui_1_1OrbitCamera_abd1cfa3cb784d613730f7be8a9e1b0dd}\label{classgui_1_1OrbitCamera_abd1cfa3cb784d613730f7be8a9e1b0dd}} 
+\index{gui::OrbitCamera@{gui::OrbitCamera}!view@{view}}
+\index{view@{view}!gui::OrbitCamera@{gui::OrbitCamera}}
+\doxysubsubsection{\texorpdfstring{view()}{view()}}
+{\footnotesize\ttfamily glm\+::mat4 gui\+::\+Orbit\+Camera\+::view (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/gui/\mbox{\hyperlink{orbit__camera_8h}{orbit\+\_\+camera.\+h}}\item 
+src/gui/\mbox{\hyperlink{orbit__camera_8cpp}{orbit\+\_\+camera.\+cpp}}\end{DoxyCompactItemize}

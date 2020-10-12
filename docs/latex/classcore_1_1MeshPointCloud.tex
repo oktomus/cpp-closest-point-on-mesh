@@ -1,0 +1,86 @@
+\hypertarget{classcore_1_1MeshPointCloud}{}\doxysection{core\+::Mesh\+Point\+Cloud Class Reference}
+\label{classcore_1_1MeshPointCloud}\index{core::MeshPointCloud@{core::MeshPointCloud}}
+
+
+Create a point cloud using a mesh. F\+I\+X\+ME\+: To get a better representation of the mesh surface, we should generate points on the mesh. At the moment, we only use the mesh vertices.  
+
+
+
+
+{\ttfamily \#include $<$mesh\+\_\+point\+\_\+cloud.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classcore_1_1MeshPointCloud_a7975edd18592e24e7bcb788893aa9cec}{Mesh\+Point\+Cloud}} (const \mbox{\hyperlink{classcore_1_1Mesh}{Mesh}} \&mesh)
+\item 
+void \mbox{\hyperlink{classcore_1_1MeshPointCloud_a92cc93e95c176cb0dbe1c3b6b71cafd8}{get\+\_\+triangle}} (const std\+::size\+\_\+t idx, glm\+::vec3 \&v1, glm\+::vec3 \&v2, glm\+::vec3 \&v3) const
+\item 
+std\+::size\+\_\+t \mbox{\hyperlink{classcore_1_1MeshPointCloud_a52dec6fd09d8220f7bd476ab24c81fa1}{get\+\_\+triangle\+\_\+count}} () const
+\item 
+std\+::size\+\_\+t \mbox{\hyperlink{classcore_1_1MeshPointCloud_a6af75d6b090fe5d39b07795bc237e1ad}{kdtree\+\_\+get\+\_\+point\+\_\+count}} () const
+\item 
+float \mbox{\hyperlink{classcore_1_1MeshPointCloud_a583c3b8cb162e59860bbee4dfca34e71}{kdtree\+\_\+get\+\_\+pt}} (const std\+::size\+\_\+t idx, int dim) const
+\item 
+glm\+::vec3 \mbox{\hyperlink{classcore_1_1MeshPointCloud_a279ca0d17053080a2fc8aeadd91df561}{kdtree\+\_\+get\+\_\+pt}} (const std\+::size\+\_\+t idx) const
+\item 
+{\footnotesize template$<$class B\+B\+OX $>$ }\\bool \mbox{\hyperlink{classcore_1_1MeshPointCloud_afe5d5a3e47c98e94ff8a8c6a79ffafab}{kdtree\+\_\+get\+\_\+bbox}} (B\+B\+OX \&) const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Create a point cloud using a mesh. F\+I\+X\+ME\+: To get a better representation of the mesh surface, we should generate points on the mesh. At the moment, we only use the mesh vertices. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classcore_1_1MeshPointCloud_a7975edd18592e24e7bcb788893aa9cec}\label{classcore_1_1MeshPointCloud_a7975edd18592e24e7bcb788893aa9cec}} 
+\index{core::MeshPointCloud@{core::MeshPointCloud}!MeshPointCloud@{MeshPointCloud}}
+\index{MeshPointCloud@{MeshPointCloud}!core::MeshPointCloud@{core::MeshPointCloud}}
+\doxysubsubsection{\texorpdfstring{MeshPointCloud()}{MeshPointCloud()}}
+{\footnotesize\ttfamily core\+::\+Mesh\+Point\+Cloud\+::\+Mesh\+Point\+Cloud (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classcore_1_1Mesh}{Mesh}} \&}]{mesh }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classcore_1_1MeshPointCloud_a92cc93e95c176cb0dbe1c3b6b71cafd8}\label{classcore_1_1MeshPointCloud_a92cc93e95c176cb0dbe1c3b6b71cafd8}} 
+\index{core::MeshPointCloud@{core::MeshPointCloud}!get\_triangle@{get\_triangle}}
+\index{get\_triangle@{get\_triangle}!core::MeshPointCloud@{core::MeshPointCloud}}
+\doxysubsubsection{\texorpdfstring{get\_triangle()}{get\_triangle()}}
+{\footnotesize\ttfamily void core\+::\+Mesh\+Point\+Cloud\+::get\+\_\+triangle (\begin{DoxyParamCaption}\item[{const std\+::size\+\_\+t}]{idx,  }\item[{glm\+::vec3 \&}]{v1,  }\item[{glm\+::vec3 \&}]{v2,  }\item[{glm\+::vec3 \&}]{v3 }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcore_1_1MeshPointCloud_a52dec6fd09d8220f7bd476ab24c81fa1}\label{classcore_1_1MeshPointCloud_a52dec6fd09d8220f7bd476ab24c81fa1}} 
+\index{core::MeshPointCloud@{core::MeshPointCloud}!get\_triangle\_count@{get\_triangle\_count}}
+\index{get\_triangle\_count@{get\_triangle\_count}!core::MeshPointCloud@{core::MeshPointCloud}}
+\doxysubsubsection{\texorpdfstring{get\_triangle\_count()}{get\_triangle\_count()}}
+{\footnotesize\ttfamily std\+::size\+\_\+t core\+::\+Mesh\+Point\+Cloud\+::get\+\_\+triangle\+\_\+count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcore_1_1MeshPointCloud_afe5d5a3e47c98e94ff8a8c6a79ffafab}\label{classcore_1_1MeshPointCloud_afe5d5a3e47c98e94ff8a8c6a79ffafab}} 
+\index{core::MeshPointCloud@{core::MeshPointCloud}!kdtree\_get\_bbox@{kdtree\_get\_bbox}}
+\index{kdtree\_get\_bbox@{kdtree\_get\_bbox}!core::MeshPointCloud@{core::MeshPointCloud}}
+\doxysubsubsection{\texorpdfstring{kdtree\_get\_bbox()}{kdtree\_get\_bbox()}}
+{\footnotesize\ttfamily template$<$class B\+B\+OX $>$ \\
+bool core\+::\+Mesh\+Point\+Cloud\+::kdtree\+\_\+get\+\_\+bbox (\begin{DoxyParamCaption}\item[{B\+B\+OX \&}]{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcore_1_1MeshPointCloud_a6af75d6b090fe5d39b07795bc237e1ad}\label{classcore_1_1MeshPointCloud_a6af75d6b090fe5d39b07795bc237e1ad}} 
+\index{core::MeshPointCloud@{core::MeshPointCloud}!kdtree\_get\_point\_count@{kdtree\_get\_point\_count}}
+\index{kdtree\_get\_point\_count@{kdtree\_get\_point\_count}!core::MeshPointCloud@{core::MeshPointCloud}}
+\doxysubsubsection{\texorpdfstring{kdtree\_get\_point\_count()}{kdtree\_get\_point\_count()}}
+{\footnotesize\ttfamily std\+::size\+\_\+t core\+::\+Mesh\+Point\+Cloud\+::kdtree\+\_\+get\+\_\+point\+\_\+count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcore_1_1MeshPointCloud_a279ca0d17053080a2fc8aeadd91df561}\label{classcore_1_1MeshPointCloud_a279ca0d17053080a2fc8aeadd91df561}} 
+\index{core::MeshPointCloud@{core::MeshPointCloud}!kdtree\_get\_pt@{kdtree\_get\_pt}}
+\index{kdtree\_get\_pt@{kdtree\_get\_pt}!core::MeshPointCloud@{core::MeshPointCloud}}
+\doxysubsubsection{\texorpdfstring{kdtree\_get\_pt()}{kdtree\_get\_pt()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily glm\+::vec3 core\+::\+Mesh\+Point\+Cloud\+::kdtree\+\_\+get\+\_\+pt (\begin{DoxyParamCaption}\item[{const std\+::size\+\_\+t}]{idx }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcore_1_1MeshPointCloud_a583c3b8cb162e59860bbee4dfca34e71}\label{classcore_1_1MeshPointCloud_a583c3b8cb162e59860bbee4dfca34e71}} 
+\index{core::MeshPointCloud@{core::MeshPointCloud}!kdtree\_get\_pt@{kdtree\_get\_pt}}
+\index{kdtree\_get\_pt@{kdtree\_get\_pt}!core::MeshPointCloud@{core::MeshPointCloud}}
+\doxysubsubsection{\texorpdfstring{kdtree\_get\_pt()}{kdtree\_get\_pt()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily float core\+::\+Mesh\+Point\+Cloud\+::kdtree\+\_\+get\+\_\+pt (\begin{DoxyParamCaption}\item[{const std\+::size\+\_\+t}]{idx,  }\item[{int}]{dim }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/core/\mbox{\hyperlink{mesh__point__cloud_8h}{mesh\+\_\+point\+\_\+cloud.\+h}}\item 
+src/core/\mbox{\hyperlink{mesh__point__cloud_8cpp}{mesh\+\_\+point\+\_\+cloud.\+cpp}}\end{DoxyCompactItemize}

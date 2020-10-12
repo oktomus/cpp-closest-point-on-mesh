@@ -57,6 +57,15 @@ $ cmake -DCMAKE_BUILD_TYPE=Release .. && make -j # Build
 $ ./app.gui # Run the GUI
 ```
 
+# Generate the docs
+
+First, install `doxygen`.
+
+```sh
+$ doxygen doxygen
+$ firefox docs/html/index.html # Open it
+```
+
 # Developer's notes 
 
 ## Finding a method

@@ -1,0 +1,53 @@
+\hypertarget{classcore_1_1ClosestPointQuery}{}\doxysection{core\+::Closest\+Point\+Query Class Reference}
+\label{classcore_1_1ClosestPointQuery}\index{core::ClosestPointQuery@{core::ClosestPointQuery}}
+
+
+Fast closest point to mesh algortihm implementation.  
+
+
+
+
+{\ttfamily \#include $<$closest\+\_\+point\+\_\+query.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classcore_1_1ClosestPointQuery_a3ddfccabf0f382090bfdbaab16350d63}{Closest\+Point\+Query}} (const \mbox{\hyperlink{classcore_1_1MeshPointCloud}{Mesh\+Point\+Cloud}} \&mesh\+\_\+point\+\_\+cloud)
+\item 
+bool \mbox{\hyperlink{classcore_1_1ClosestPointQuery_a1d8eda0ae1c2cd40c3ec0a48fe42a480}{get\+\_\+closest\+\_\+point}} (const glm\+::vec3 \&query\+\_\+point, float max\+\_\+distance, glm\+::vec3 \&result) const
+\begin{DoxyCompactList}\small\item\em Return the closest point on the mesh within the specified maximum search distance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Fast closest point to mesh algortihm implementation. 
+
+After creating the query object, just call {\ttfamily get\+\_\+closest\+\_\+point}.
+
+This implementation require a point cloud and not a mesh. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classcore_1_1ClosestPointQuery_a3ddfccabf0f382090bfdbaab16350d63}\label{classcore_1_1ClosestPointQuery_a3ddfccabf0f382090bfdbaab16350d63}} 
+\index{core::ClosestPointQuery@{core::ClosestPointQuery}!ClosestPointQuery@{ClosestPointQuery}}
+\index{ClosestPointQuery@{ClosestPointQuery}!core::ClosestPointQuery@{core::ClosestPointQuery}}
+\doxysubsubsection{\texorpdfstring{ClosestPointQuery()}{ClosestPointQuery()}}
+{\footnotesize\ttfamily core\+::\+Closest\+Point\+Query\+::\+Closest\+Point\+Query (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classcore_1_1MeshPointCloud}{Mesh\+Point\+Cloud}} \&}]{mesh\+\_\+point\+\_\+cloud }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classcore_1_1ClosestPointQuery_a1d8eda0ae1c2cd40c3ec0a48fe42a480}\label{classcore_1_1ClosestPointQuery_a1d8eda0ae1c2cd40c3ec0a48fe42a480}} 
+\index{core::ClosestPointQuery@{core::ClosestPointQuery}!get\_closest\_point@{get\_closest\_point}}
+\index{get\_closest\_point@{get\_closest\_point}!core::ClosestPointQuery@{core::ClosestPointQuery}}
+\doxysubsubsection{\texorpdfstring{get\_closest\_point()}{get\_closest\_point()}}
+{\footnotesize\ttfamily bool core\+::\+Closest\+Point\+Query\+::get\+\_\+closest\+\_\+point (\begin{DoxyParamCaption}\item[{const glm\+::vec3 \&}]{query\+\_\+point,  }\item[{float}]{max\+\_\+distance,  }\item[{glm\+::vec3 \&}]{result }\end{DoxyParamCaption}) const}
+
+
+
+Return the closest point on the mesh within the specified maximum search distance. 
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/core/\mbox{\hyperlink{closest__point__query_8h}{closest\+\_\+point\+\_\+query.\+h}}\item 
+src/core/\mbox{\hyperlink{closest__point__query_8cpp}{closest\+\_\+point\+\_\+query.\+cpp}}\end{DoxyCompactItemize}
