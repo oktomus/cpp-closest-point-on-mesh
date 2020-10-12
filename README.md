@@ -24,6 +24,8 @@ The obj files I have used are available in [common-3d-test-models](https://githu
 |armadillo.obj|~300k|~100k|36ms|~5ms
 |xyzrgb_dragon.obj|~750k|~250k|77ms|~5ms to ~10ms
 
+The search radius doesn't effectively affect the performances because of the way I'm using the KDTree. Although, if the query point is far away from the mesh, the compute time will increase. A simple point to bbox distance check could avoid that.
+
 # Algorithm
 
 I am using a point cloud with a KDTree to find the closest point on the mesh. 
@@ -85,9 +87,12 @@ I didn't write any tests for this application. But if I do so, here is what I wi
 - Write unit tests for the low-level math functions
 - Write test files to assert that the implementation gives correct result for a given mesh
 
-# Going further
+# Possible improvements
 
-- Use SIMD instructions to compute distances and closest point on triangle
+- Generate more points in the mesh point cloud to support any type of mesh.
+- When using the KDTree, find the N closest points **that are in the given search radius**. Right now I only consider the N closest points, even if they are too far away.
+- Use SIMD instructions to compute distances and closest point on triangle.
+- Make the algorithm multithread by splitting the point cloud in N buckets where N. Then simply give a bucket to each thread.
 
 # References
 
