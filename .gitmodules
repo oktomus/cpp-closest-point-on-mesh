@@ -2,10 +2,6 @@
 	path = distant/imgui
 	url = https://github.com/ocornut/imgui.git
     ignore = dirty
-[submodule "distant/glfw"]
-	path = distant/glfw
-	url = https://github.com/glfw/glfw
-    ignore = dirty
 [submodule "distant/glm"]
 	path = distant/glm
 	url = https://github.com/g-truc/glm.git
