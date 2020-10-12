@@ -13,8 +13,9 @@ namespace core
 
 /**
  * @brief Create a point cloud using a mesh.
- * TODO: Allow to generate points on the mesh to
- * increase precision.
+ * FIXME: To get a better representation of the mesh surface,
+ * we should generate points on the mesh. At the moment, we
+ * only use the mesh vertices.
  */
 class MeshPointCloud
 {

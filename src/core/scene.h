@@ -18,8 +18,7 @@ class Scene
 
     std::size_t get_mesh_count() const;
 
-    // FIXME: Multiple mesh usage is not supported.
-    const Mesh& get_mesh() const;
+    const Mesh& get_mesh(const std::size_t index) const;
 
     void render() const;
 

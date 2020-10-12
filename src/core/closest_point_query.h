@@ -11,13 +11,12 @@ namespace core
 {
 
 /**
- * @brief Fast closest point to mesh.
+ * @brief Fast closest point to mesh algortihm implementation.
  *
  * After creating the query object, just call
  * `get_closest_point`.
- *
- * When creating the query object, a tree will
- * be generated to speed up look up time.
+ * 
+ * This implementation require a point cloud and not a mesh.
  */
 class ClosestPointQuery
 {

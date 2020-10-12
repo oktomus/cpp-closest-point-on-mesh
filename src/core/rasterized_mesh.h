@@ -10,7 +10,8 @@ namespace core
 {
 
 /**
- * @brief Mesh wrapper that can be rendered with OpenGL.
+ * @brief Mesh wrapper that do everything necessary to
+ * render the mesh with OpenGL.
  */
 class RasterizedMesh
 {

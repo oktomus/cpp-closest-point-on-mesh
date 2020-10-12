@@ -38,16 +38,17 @@ bool ClosestPointQuery::get_closest_point(
 {
     assert(max_distance > 0.0f);
 
+    // nanoflann (the KDTree library) use squared distance. We do the same.
     const float max_distance2 = max_distance * max_distance;
 
-    // Define how many points we take from the tree to find the closest point in the mesh.
+    // Define how many points we take from the tree to find the closest point on the mesh.
     // A number that is too low will generate incorrect results when the mesh density is high.
-    // The points we process are the closest points to the query point.
+    // The points we process are the nearest points in the cloud to the query point.
     const std::size_t point_to_process_max_count = 2000;
     std::vector<std::size_t> ret_index(point_to_process_max_count);
     std::vector<float> out_dist_sqr(point_to_process_max_count);
 
-    // Use the KDTree to find the closest points.
+    // Use the KDTree to find the nearest points to the `query_point`.
     const std::size_t num_results =
         m_tree_index.knnSearch(
             glm::value_ptr(query_point),
@@ -59,24 +60,24 @@ bool ClosestPointQuery::get_closest_point(
     float closest_distance2 = 0.0f;
 
     // Find the closest point on the mesh using all points near to `query_point`.
-    // To do so, we use the triangle on which each point is laying and compute the closest
-    // point to the quer_point that is on the triangle.
-    // For all these "triangles points", we keep the L2 closest one to the query point.
+    // To do so, we use the triangle on which each point is and compute the closest
+    // point to query_point that is on the triangle.
+    // For all these "triangles points", we keep the closest one to the query point.
     // FIXME: We analyse the same triangles multiple times.
     for (std::size_t i = 0; i < num_results; ++i)
     {
-        // Ask the triangle to the point cloud.
+        // Ask to the point cloud which triangle is this point on.
         glm::vec3 v1, v2, v3;
         m_mesh_point_cloud.get_triangle(ret_index[i], v1, v2, v3);
 
-        // Compute the point on the triangle.
+        // Compute the closest point to `query_point` that is on the triangle.
         glm::vec3 p = closest_point_in_triangle(
             query_point,
             v1,
             v2,
             v3);
 
-        // Keep the best.
+        // From all triangles, keep the closest one.
         const float distance2_to_triangle = distance2(p, query_point);
 
         if (distance2_to_triangle < max_distance2

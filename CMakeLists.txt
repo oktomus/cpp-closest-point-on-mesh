@@ -18,6 +18,8 @@ set (CMAKE_CXX_EXTENSIONS OFF)
 # Automatically managed dependencies
 #
 # glm and imgui are git submodules of this project.
+#
+# nanoflann and GLAD are directly sored in the repository (src/thirdparties)
 
 set(WEB_ROOT "${CMAKE_SOURCE_DIR}/distant/web")
 set(GLM_ROOT "${CMAKE_SOURCE_DIR}/distant/glm")

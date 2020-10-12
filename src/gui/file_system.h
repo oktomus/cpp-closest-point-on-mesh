@@ -15,6 +15,9 @@ namespace gui
 // File system utilities.
 //
 
+/**
+ * @brief Open a window using zenity to let the user choose a file.
+ */
 inline std::string linux_open_file(
     const std::string               title,
     const std::vector<std::string>  file_filters = {});

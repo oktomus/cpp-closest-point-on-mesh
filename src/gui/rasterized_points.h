@@ -11,6 +11,7 @@ namespace gui
 
 /**
  * @brief OpenGL drawing implementation for a list of point.
+ * Give it a list of point+color and it will do the necessary to draw it.
  */
 class RasterizedPoints
 {

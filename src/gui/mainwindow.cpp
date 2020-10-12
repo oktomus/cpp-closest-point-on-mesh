@@ -25,6 +25,11 @@
 #include <iostream>
 #include <string>
 
+// FIXME: This is not the cleanest code from this project.
+// Here are some refactoring ideas:
+// - Split IMGUI and OpenGL drawing in 2 separate classes.
+// - Store algorithm related data in a separate class.
+
 namespace gui
 {
 
@@ -173,7 +178,7 @@ void MainWindow::load_scene(const std::string& path)
     }
 
     // Build a point cloud of the mesh.
-    m_mesh_point_cloud.reset(new core::MeshPointCloud(m_scene->get_mesh()));
+    m_mesh_point_cloud.reset(new core::MeshPointCloud(m_scene->get_mesh(0)));
 
     // Prepare closest point queries.
     m_closest_point_query.reset(new core::ClosestPointQuery(*m_mesh_point_cloud));

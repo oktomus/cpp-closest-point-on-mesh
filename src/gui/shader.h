@@ -10,6 +10,9 @@
 namespace gui
 {
 
+/**
+ * @brief Simplify shader compilation and usage in an OpenGL pipeline.
+ */
 class Shader
 {
   public:

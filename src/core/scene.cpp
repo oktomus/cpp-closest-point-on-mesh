@@ -27,10 +27,10 @@ std::size_t Scene::get_mesh_count() const
     return m_meshes.size();
 }
 
-const Mesh& Scene::get_mesh() const
+const Mesh& Scene::get_mesh(const std::size_t index) const
 {
-    assert(m_meshes.size() > 0);
-    return m_meshes[0];
+    assert(index < m_meshes.size());
+    return m_meshes[index];
 }
 
 void Scene::render() const

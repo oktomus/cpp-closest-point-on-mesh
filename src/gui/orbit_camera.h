@@ -8,6 +8,11 @@ class GLFWwindow;
 namespace gui 
 {
 
+/**
+ * @brief Camera designed to rotate around a 3D model.
+ * 
+ * The camera is able to listen to GLFW events.
+ */
 class OrbitCamera
 {
   public:
