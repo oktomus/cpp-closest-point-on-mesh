@@ -1,6 +1,7 @@
 This is an example implementation of the *closest point on mesh* algorithm. Given any 3D point and any mesh, it should find the closest point on the mesh to the given point in a maximum given radius. A GUI comes with it to demonstrate the results and performance. Automated tests are available in the program. They test the low level methods of the algorithm.
 
-:notebook: [Documentation](https://oktomus.com/cpp-closest-point-on-mesh)
+- :notebook: [Documentation](https://oktomus.com/cpp-closest-point-on-mesh)
+- :boom: [Try it](https://github.com/oktomus/cpp-closest-point-on-mesh/releases)
 
 ![demo](demo.gif)
 ![demo](demo2.gif)
@@ -23,13 +24,33 @@ The obj files I have used are available in [common-3d-test-models](https://githu
 |armadillo.obj|~300k|~100k|36ms|~5ms
 |xyzrgb_dragon.obj|~750k|~250k|77ms|~5ms to ~10ms
 
-# Limitations
+# Algorithm
 
-- A point far away makes performance works. A simple check distance to bbox will fix this
+I am using a point cloud with a KDTree to find the closest point on the mesh. 
+
+**Before-hand:**
+
+1. Compute a point cloud of the mesh
+    1. Add vertices in the point cloud
+    2. Generate points on the mesh to increase the point cloud precision **Not implemented**
+2. Create a KDTree with containing the point cloud
+
+**When requesting the closest point:**
+
+1. Find the N closest points in the point cloud using the KDTree
+2. For each of these points
+    1. Get the mesh triangle on which the point is
+    2. Compute the closest point to the query point that is on the triangle
+3. Keep the closest point to the query point
+
+**Requirements:**
+
+- The mesh needs to be uniform
+- The search must always be higher than the size of one triangle
 
 # Build
 
-This program works only on Linux and require the following dependencies:
+This program works only on Linux and require to install the following dependencies:
 - assimp
 - glfw
 
@@ -41,6 +62,14 @@ $ cmake -DCMAKE_BUILD_TYPE=Release .. && make -j # Build
 $ ./app.gui # Run the GUI
 ```
 
+**Used thirdparties:**
+
+- [nanoflann](https://github.com/jlblancoc/nanoflann): KDTree implementation
+- GLFW
+- GLAD
+- [assimp](https://github.com/assimp/assimp): Assets importer
+- [imgui](https://github.com/ocornut/imgui): GUI
+
 # Generate the docs
 
 First, install `doxygen`.
@@ -50,42 +79,15 @@ $ doxygen doxygen
 $ firefox docs/html/index.html # Open it
 ```
 
-# Developer's notes 
+# Tests
 
-## Finding a method
+I didn't write any tests for this application. But if I do so, here is what I will do:
+- Write unit tests for the low-level math functions
+- Write test files to assert that the implementation gives correct result for a given mesh
 
-The first thing I did was to find a good method to implement the closes point on mesh algorithm. I already had an idea on how to write a naive implementation.
-
-I found 2 candidates:
-- Build a lookup table to speed-up finding time
-- Use a set of point on the mesh to simplify the problem
-
-The first, is very common and consists of using some kind of tree like a BVH Tree, Sphere Tree or something else to store the mesh. That way, the step of finding the closest triangles on the mesh is faster. A basic alogirthm using this method would be the following:
-
-1. Before:
-  a. Build a lookup table (BVH Tree or something else)
-2. When requesting the closest point on the mesh:
-  a. Find the closest node in the tree
-  b. Find the closest point on the triangles that are in this node.
-  c. Go to a. for all other nodes where `distance(query_point, closest_point)` < `distance(query_point, node)`.
-
-The second, is IMHO very clever. Instead of finding the closest triangles and then compute the closest point on all triangles, we generate some points on the triangle first. That way, we just have to find the closest point (instead of the closest triangles). This allow us to use a more efficient lookup table that is designed for finding closest neighbor like a KD-Tree. The problem with this method is that we need to configure the number of points to generate on the mesh. Depending on the density we choose, the results can be poorly computed or to slow to compute. A basic algorithm using this method would be the following:
-
-1. Before:
-  a. Generate points on the mesh in the most uniform way possible
-  b. Build a lookup table (KD-Tree or something else)
-2. When requesting the closest point on the mesh:
-  a. Find the closest point in the tree and get the triangle on which the point was generated
-  b. Compute the closest point on the triangle 
-
-Because I'm already familiar with the first approach, I decided to implement the second approach.
-
-## Testing
-
-## Going further
+# Going further
 
 - Use SIMD instructions to compute distances and closest point on triangle
-
 
 # References
 
