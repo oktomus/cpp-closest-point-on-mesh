@@ -35,7 +35,7 @@ I am using a point cloud with a KDTree to find the closest point on the mesh.
 1. Compute a point cloud of the mesh
     1. Add vertices in the point cloud
     2. Generate points on the mesh to increase the point cloud precision **Not implemented**
-2. Create a KDTree with containing the point cloud
+2. Build a KDTree containing the point cloud
 
 **When requesting the closest point:**
 
